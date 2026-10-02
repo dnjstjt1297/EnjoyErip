@@ -370,20 +370,23 @@ try {
     await page.evaluate(() => document.querySelector('#mediaCheck').remove());
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(base); await assertVisible('.hero h1');
-    const layers = page.locator('.hero-art .art-layer');
-    assert.ok(await layers.count(), 'the current travel collage is present');
-    assert.ok(await layers.evaluateAll((nodes) => nodes.every((node) => {
+    const plane = page.locator('#heroPlane.hero-airplane');
+    await plane.waitFor({ state: 'visible' });
+    const motionBefore = await plane.evaluate((node) => {
       const style = getComputedStyle(node);
-      return style.animationName === 'none' && style.transform === 'none' && style.translate === 'none';
-    })), 'every collage layer disables animation and transforms in reduced motion');
+      return { animation: style.animationName, transform: style.transform, translate: style.translate };
+    });
+    assert.deepEqual(motionBefore, { animation: 'none', transform: 'none', translate: 'none' }, 'the airplane is static in reduced motion');
     const hero = await page.locator('.hero').boundingBox();
     await page.mouse.move(hero.x + hero.width * .15, hero.y + Math.min(hero.height * .3, 200));
     await page.mouse.move(hero.x + hero.width * .85, hero.y + Math.min(hero.height * .7, 400), { steps: 8 });
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-    assert.deepEqual(await page.locator('.hero-art').evaluate((node) => {
+    assert.deepEqual(await plane.evaluate((node) => {
       const style = getComputedStyle(node);
-      return [style.getPropertyValue('--travel-x').trim(), style.getPropertyValue('--travel-y').trim()];
-    }), ['0px', '0px'], 'pointer movement cannot enable reduced-motion parallax');
+      return { animation: style.animationName, transform: style.transform, translate: style.translate };
+    }), motionBefore, 'pointer movement cannot start reduced-motion airplane movement');
+    assert.equal(await page.locator('[data-airplane-hero]').getAttribute('data-flight-state'), 'STATIC');
+    assert.equal(await page.locator('[data-airplane-hero]').getAttribute('data-flight-running'), 'false');
     assert.equal(await page.locator('.journey-card').first().evaluate((node) => getComputedStyle(node.parentElement).opacity), '1');
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     assert.deepEqual(pageErrors, []);

@@ -204,12 +204,12 @@ API 호출은 `js/api/tour-api.js`, DOM 이벤트와 화면 갱신은 `js/pages/
 
 원석 `frontend/assets/css/style.css`, `service.css`의 색상·간격·컴포넌트와 `index.html`, `mypage.html`, `assets/js/app.js`의 화면·인터랙션을 현재 구조에 맞게 적용했습니다. 대표 토큰은 paper `#f5f7ff`, ink `#252c40`, 청록 `#087f91`, CTA gradient `#34445c → #202b40`입니다. Pretendard와 시스템 한글 fallback을 사용합니다.
 
-- **Main:** 중앙 Hero, 원석의 지구·비행기·도시 SVG와 티켓 요소, 부드러운 pointer parallax. 기존 Mood·여권 미리보기는 아래 흐름으로 연결합니다.
+- **Main:** 기존 중앙 Hero·타이포·지구·도시·티켓·섹션 구성을 유지하고 비행기만 실제 GLB 3D 모델로 교체했습니다. 가벼운 WebGL 렌더링에 자동 비행·포인터 추적·복귀 동작을 연결하며, 기존 Mood·여권 미리보기·회원·CTA는 그대로 사용합니다. [비행기 동작과 검증](docs/airplane-hero.md)을 참고하세요.
 - **검색:** 하나의 탐색 화면 안에 Desktop 목록 30% / 지도 70%를 배치합니다. 목록은 134px 높이의 행과 96px 사진으로 정리하고 독립 스크롤·하단 페이지네이션을 제공합니다. 제목은 기존 상세보기, 행은 지도 선택, `＋ 여행 계획`은 기존 초안 저장으로 연결합니다. 방문 기록은 작은 보조 버튼으로 유지합니다. 모바일은 지도 아래에 142px 높이의 목록을 배치합니다. 검색어·지역·유형·정렬과 무드 칩을 모으고 대·중·소분류는 상세 필터에서 그대로 사용합니다.
 - **지도:** 큰 지도, 현재 위치·전체 보기, 유형 핀·범례, 카드↔마커 강조를 제공합니다.
 - **사진:** TourAPI의 `firstimage → firstimage2 → 자체 placeholder` 순서를 유지하고, 로딩 중 shimmer·실패 시 대체 화면을 표시합니다.
 - **HotPlace·MyPage:** 원석의 카드/모달 및 7:5 프로필 대시보드 배치를 채택하고, 기존 서비스 함수와 Bootstrap 모달에 연결했습니다.
-- **인터랙션·접근성:** skeleton·loading overlay·toast·카드 hover·SVG 무드 아이콘·여권 스탬프를 유지합니다. Parallax는 정밀 포인터에서만 움직이고 화면 이탈·비활성화 시 정리합니다. `prefers-reduced-motion`, focus-visible, label·alt·ARIA를 지원합니다.
+- **인터랙션·접근성:** skeleton·loading overlay·toast·카드 hover·SVG 무드 아이콘·여권 스탬프를 유지합니다. 비행기는 정밀 포인터 환경에서 움직이고 화면 이탈·비활성화 시 멈춥니다. Touch·동작 줄이기 설정에서는 정적인 비행기를 표시합니다. `prefers-reduced-motion`, focus-visible, label·alt·ARIA를 지원합니다.
 
 원석 SVG 자산 `favicon.svg`, `globe.svg`, `plane.svg`, `city.svg`를 재사용했습니다. 이전 경복궁 사진 Hero는 현재 화면에서 제거했습니다. `seoul-gyeongbokgung.webp`는 기존 이미지 회귀 테스트에서도 사용하므로 파일은 보존했습니다. Pretendard v1.3.9는 [공식 프로젝트](https://github.com/orioncactus/pretendard)의 SIL Open Font License를 따르며, Bootstrap 5.3.3은 MIT 라이선스 헤더를 유지한 로컬 파일입니다.
 
@@ -339,13 +339,19 @@ LIVE_BASE_URL=http://localhost:5500 npm run test:live
 
 [Trip 작업·체크포인트·롤백 안내](docs/trip-workspace.md)
 
+### 3D 비행기 · 위치 입력 최종 검증
+
+기존 메인 구성은 유지하고 파란 날개의 3D 비행기만 추가했습니다. [3D 모델](assets/models/airplane.glb)은 직접 제작한 약 149KB의 GLB이며 새 외부 라이브러리 없이 렌더링합니다. [포인터 추적 화면](screenshots/home-airplane-follow-final.png), [구현·검증 안내](docs/airplane-hero.md)를 확인할 수 있습니다.
+
+기존 120개 회귀와 비행 모션 12개, 3D 모델 6개, HotPlace 위치 UX 12개를 합해 **150개 모두 PASS**입니다. 실제 TourAPI·Kakao 실행의 runtimeErrors·consoleErrors·failedRequests는 모두 **0**이고 Desktop/Mobile의 가로 넘침도 없습니다. [HotPlace 위치 입력 변경](docs/hotplace-location.md)도 기존 좌표 스키마를 유지합니다.
+
 ### 최종 실행 화면
 
-아래 이미지는 실제 통합 검증에서 저장한 화면입니다. Trip 3개는 지도 중심 화면 재구성 후의 최신 캡처이며, 나머지는 보존한 통합 검증 캡처입니다. 키워드 전용 캡처는 재구성 전 기능 검증 화면입니다. 관광지와 지도는 실제 TourAPI·Kakao 응답이며, 캡처 속 회원·방문 기록·여행계획·HotPlace는 격리된 QA 브라우저에서 만든 검증용 예시입니다. 일반 사용자에게 미리 채워 넣는 데이터가 아닙니다.
+아래 이미지는 실제 통합 검증에서 저장한 화면입니다. Trip 3개와 Home 2개는 각각 지도 중심 화면·3D 비행기 작업 후 캡처이며, 나머지는 보존한 통합 검증 캡처입니다. 키워드 전용 캡처는 재구성 전 기능 검증 화면입니다. 관광지와 지도는 실제 TourAPI·Kakao 응답이며, 캡처 속 회원·방문 기록·여행계획·HotPlace는 격리된 QA 브라우저에서 만든 검증용 예시입니다. 일반 사용자에게 미리 채워 넣는 데이터가 아닙니다.
 
 | 화면 | 캡처 |
 | --- | --- |
-| 홈 · Travel Mood | [Home Desktop](screenshots/home-final.png) |
+| 홈 · Travel Mood | [Home Desktop](screenshots/home-airplane-desktop-final.png) |
 | 여행지 검색 | [Trip Desktop](screenshots/trip-workspace-desktop-final.png) |
 | 검색 결과 · Kakao Map | [Trip + Map](screenshots/trip-workspace-map-final.png) |
 | 키워드 검색 · 유형 핀 | [Keyword Search](screenshots/trip-keyword-final.png) |
@@ -357,7 +363,7 @@ LIVE_BASE_URL=http://localhost:5500 npm run test:live
 | HotPlace 이야기 | [HotPlace Detail](screenshots/hotplace-detail-final.png) |
 | 로그인 모달 | [Login](screenshots/login-final.png) |
 | 마이페이지 | [MyPage](screenshots/mypage-final.png) |
-| 모바일 홈 | [Mobile Home](screenshots/mobile-home-final.png) |
+| 모바일 홈 | [Mobile Home](screenshots/home-airplane-mobile-final.png) |
 | 모바일 검색 · 지도 | [Mobile Trip](screenshots/trip-workspace-mobile-final.png) |
 | 모바일 여행 여권 | [Mobile Passport](screenshots/mobile-passport-final.png) |
 
