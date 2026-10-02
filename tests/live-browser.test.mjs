@@ -128,8 +128,15 @@ try {
     const place = places[0];
     await page.fill('#placeName', place.title); await page.fill('#visitDate', '2026-10-01'); await page.selectOption('#placeType', '명소');
     await page.fill('#placeDescription', '골목을 걷다가 만난 서울의 또 다른 모습. 다음 여행에도 다시 들르고 싶은 곳.');
-    await page.fill('#placeImage', place.firstimage); await page.fill('#placeLat', place.mapy); await page.fill('#placeLng', place.mapx);
+    await page.fill('#placeImage', place.firstimage);
+    assert.ok(place.addr1, 'the selected real attraction provides an address');
+    await page.fill('#placeAddress', place.addr1); await page.click('#findAddress');
+    await page.waitForFunction(() => !document.querySelector('#findAddress').disabled);
+    const selectedPosition = { lat: Number(await page.inputValue('#placeLat')), lng: Number(await page.inputValue('#placeLng')) };
+    assert.ok(selectedPosition.lat > 33 && selectedPosition.lat < 39 && selectedPosition.lng > 124 && selectedPosition.lng < 132, 'real address search supplies Korean map coordinates');
     await page.click('#savePlaceBtn'); await page.locator('.hotplace-card').waitFor(); await page.waitForTimeout(1000); await snap('hotplace-live');
+    const storedPlace = await page.evaluate(() => JSON.parse(localStorage.getItem('enjoytrip_hotplaces'))[0]);
+    assert.equal(Number(storedPlace.mapy), selectedPosition.lat); assert.equal(Number(storedPlace.mapx), selectedPosition.lng);
     await page.goto(`${base}/mypage.html`); await page.locator('#profileCard').waitFor(); await snap('mypage');
     return { persistedPlan: true, numberedRoute: 3, hotplace: true };
   });

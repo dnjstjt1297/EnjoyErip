@@ -17,6 +17,7 @@ const form = $("hotplaceForm");
 let editingId = "", editorOwner = "", editorOpen = false, editorVersion = 0;
 let detailOwner = "";
 let picker, pickerPromise, photo = "", photoBusy = false, photoVersion = 0;
+let saveBusy = false, locationSource = "", addressLookup = null;
 let selectedPlace = null, tourItems = [], tourPage = 1, tourTotal = 0, tourVersion = 0;
 let tourRequest, linkedRequest, addressVersion = 0;
 let tourSearch = { areaCode: "", contentTypeId: "12", keyword: "" };
@@ -28,6 +29,11 @@ const asVisitPlace = (place) => ({ ...place, addr1: place.address || "", lDongRe
 $("visitDate").max = today();
 
 function showError(message = "") { $("hotError").textContent = message; $("hotError").hidden = !message; }
+function updateSaveButton() {
+  const locating = addressLookup?.version === addressVersion && currentEditor(addressLookup.editor, addressLookup.owner);
+  $("savePlaceBtn").disabled = photoBusy || saveBusy || Boolean(locating);
+  $("savePlaceBtn").textContent = saveBusy || locating ? "위치를 확인하고 있어요…" : editingId ? "수정 저장" : "핫플레이스 저장";
+}
 function previewImage() {
   $("imagePreview").hidden = false;
   $("imagePreview").innerHTML = photoMarkup(photo, $("placeImage").value.trim(), "등록할 장소 사진 미리보기");
@@ -52,19 +58,32 @@ function resetTourSearch() {
   $("hotTourStatus").textContent = "지역이나 이름으로 찾아보세요. 실제 TourAPI 관광지를 조회합니다.";
 }
 function updateLocation({ pan = true } = {}) {
+  updateSaveButton();
   const lat = $("placeLat").value, lng = $("placeLng").value;
   if (validCoordinates(lat, lng)) {
     picker?.setLocation(lat, lng, { pan });
-    $("selectedLocation").textContent = `선택한 위치: 위도 ${Number(lat).toFixed(6)}, 경도 ${Number(lng).toFixed(6)}`;
+    $("selectedLocation").dataset.state = "ready";
+    $("selectedLocation").textContent = ({ map: "지도에서 위치를 선택했어요.", tour: "관광지의 위치를 선택했어요.", address: "주소에 해당하는 위치를 찾았어요.", saved: "저장된 장소의 위치를 불러왔어요." })[locationSource] || "장소의 위치가 준비됐어요.";
   } else {
     picker?.clear();
-    $("selectedLocation").textContent = "지도를 클릭하거나 주소 검색으로 위치를 지정해 주세요.";
+    const locating = addressLookup?.version === addressVersion && currentEditor(addressLookup.editor, addressLookup.owner);
+    $("selectedLocation").dataset.state = locating ? "loading" : "empty";
+    $("selectedLocation").textContent = locating ? "주소에서 장소의 위치를 찾고 있어요…" : $("placeAddress").value.trim()
+      ? "주소를 입력했어요. 주소 검색을 누르거나 저장하면 위치를 찾아드려요."
+      : "관광지를 선택하거나 주소 검색·지도 클릭으로 위치를 정해 주세요.";
   }
 }
-function setLocation(point) {
+function clearLocation() {
+  $("placeLat").value = ""; $("placeLng").value = ""; locationSource = "";
+  updateLocation({ pan: false });
+}
+function setLocation(point, source = "map") {
+  if (!validCoordinates(point.mapy, point.mapx)) return false;
+  locationSource = source;
   $("placeLat").value = Number(point.mapy).toFixed(7);
   $("placeLng").value = Number(point.mapx).toFixed(7);
   updateLocation();
+  return true;
 }
 async function ensurePicker() {
   if (!pickerPromise) {
@@ -73,7 +92,7 @@ async function ensurePicker() {
       addressVersion++; clearSelection();
       setLocation({ mapy: lat, mapx: lng });
     } }).then((result) => { picker = result; return result; }).catch((error) => {
-      $("pickMap").innerHTML = `<div class="map-unavailable" role="status"><strong>지도 연결이 필요해요</strong><p>${e(error.message)}</p><p>위도·경도를 직접 입력해도 기록할 수 있어요.</p></div>`;
+      $("pickMap").innerHTML = `<div class="map-unavailable" role="status"><strong>지도 연결이 필요해요</strong><p>${e(error.message)}</p><p>위치가 제공되는 관광지를 위에서 선택하거나, 지도 연결을 확인한 뒤 다시 시도해 주세요.</p></div>`;
       throw error;
     });
   }
@@ -98,13 +117,13 @@ function openEditor(id = "") {
   form.reset(); resetTourSearch(); showError();
   selectedPlace = item?.touristPlace || null; displaySelection();
   $("hotplaceEditorTitle").textContent = item ? "핫플레이스 수정" : "핫플레이스 등록";
-  $("savePlaceBtn").textContent = item ? "수정 저장" : "핫플레이스 저장";
-  $("savePlaceBtn").disabled = false;
+  saveBusy = false;
   $("findAddress").disabled = false;
   for (const [key, field] of Object.entries({ name: "placeName", date: "visitDate", type: "placeType", description: "placeDescription", address: "placeAddress", imageUrl: "placeImage", mapy: "placeLat", mapx: "placeLng" })) $(field).value = item?.[key] ?? "";
   if (!item) { $("visitDate").value = today(); $("placeType").value = "관광지"; }
   if (item?.type && !$("placeType").value) { $("placeType").add(new Option(item.type, item.type)); $("placeType").value = item.type; }
   photo = safePhotoData(item?.photo); photoBusy = false;
+  locationSource = item ? "saved" : ""; updateSaveButton();
   $("photoStatus").textContent = photo ? "업로드한 사진을 보관하고 있어요." : "사진 없이도 기록할 수 있어요.";
   previewImage(); updateLocation(); editorModal().show();
   loadTourRegions(editorVersion, editorOwner);
@@ -142,11 +161,11 @@ $("hotplaceModal").addEventListener("shown.bs.modal", async () => {
     const instance = await ensurePicker();
     if (!currentEditor(version, owner)) return;
     instance.relayout(); updateLocation();
-  } catch { /* The picker explains fallback; text and coordinate fields remain usable. */ }
+  } catch { /* Location-bearing TourAPI selections and existing saved places still work. */ }
 });
 $("hotplaceModal").addEventListener("hide.bs.modal", () => {
   editorOpen = false; editorVersion++; photoVersion++; addressVersion++;
-  cancelTourSearch(); photoBusy = false;
+  cancelTourSearch(); photoBusy = false; saveBusy = false;
 });
 
 function renderHotplaces() {
@@ -211,12 +230,12 @@ function selectTourPlace(place) {
   $("placeName").value = place.title || ""; $("placeAddress").value = place.addr1 || "";
   $("placeType").value = ({ 12: "관광지", 14: "문화시설", 15: "축제·공연", 25: "여행코스", 28: "레포츠", 32: "숙박", 38: "쇼핑", 39: "카페·음식점" })[place.contenttypeid] || "기타";
   addressVersion++;
-  if (validCoordinates(place.mapy, place.mapx)) setLocation(place);
-  else { $("placeLat").value = ""; $("placeLng").value = ""; updateLocation(); }
+  if (validCoordinates(place.mapy, place.mapx)) setLocation(place, "tour");
+  else clearLocation();
   displaySelection();
   $("hotTourStatus").textContent = validCoordinates(place.mapy, place.mapx)
     ? `${place.title}의 이름, 주소, 위치를 채웠어요. 나만의 방문 이야기와 사진을 남겨보세요.`
-    : "이 관광지는 좌표가 없어요. 주소 검색이나 지도 클릭으로 위치를 지정해 주세요.";
+    : "이 관광지는 지도 위치가 제공되지 않아요. 주소를 확인하고 저장하거나 지도에서 위치를 선택해 주세요.";
 }
 async function searchTourPlaces(reset = false) {
   if (!editorOpen || editorOwner !== getCurrentUser()?.id) return;
@@ -256,24 +275,46 @@ $("hotTourResults").addEventListener("click", (event) => {
   if (place) selectTourPlace(place);
 });
 $("clearTourSelection").addEventListener("click", () => { clearSelection(); $("hotTourStatus").textContent = "직접 입력 모드입니다. 장소 정보를 자유롭게 수정해 보세요."; });
-for (const id of ["placeAddress", "placeLat", "placeLng"]) $(id).addEventListener("input", () => { addressVersion++; clearSelection(); if (id !== "placeAddress") updateLocation({ pan: false }); });
-$("findAddress").addEventListener("click", async () => {
+$("placeAddress").addEventListener("input", () => {
+  addressVersion++; clearSelection(); clearLocation(); showError();
+});
+async function locateAddress() {
   const address = $("placeAddress").value.trim();
-  if (!address) { showMessage("검색할 주소를 입력해 주세요.", "warning"); return; }
+  if (!address) throw new Error("주소를 입력하거나 지도에서 장소의 위치를 선택해 주세요.");
+  if (!currentEditor(editorVersion, editorOwner)) return false;
+  if (addressLookup?.address === address && addressLookup.version === addressVersion && currentEditor(addressLookup.editor, addressLookup.owner)) return addressLookup.promise;
   const version = ++addressVersion, editor = editorVersion, owner = editorOwner;
-  $("findAddress").disabled = true;
+  const lookup = { address, version, editor, owner, promise: null };
+  addressLookup = lookup; $("findAddress").disabled = true; updateLocation({ pan: false });
+  lookup.promise = (async () => {
+    try {
+      const instance = await ensurePicker();
+      if (version !== addressVersion || !currentEditor(editor, owner)) return false;
+      const point = await instance.searchAddress(address);
+      if (version !== addressVersion || !currentEditor(editor, owner)) return false;
+      return setLocation(point, "address");
+    } catch (error) {
+      if (version !== addressVersion || !currentEditor(editor, owner)) return false;
+      throw error;
+    } finally {
+      if (addressLookup === lookup) {
+        addressLookup = null;
+        if (currentEditor(editor, owner)) { $("findAddress").disabled = false; updateLocation({ pan: false }); }
+      }
+    }
+  })();
+  return lookup.promise;
+}
+$("findAddress").addEventListener("click", async () => {
   try {
-    const instance = await ensurePicker(); const point = await instance.searchAddress(address);
-    if (version !== addressVersion || !currentEditor(editor, owner)) return;
-    clearSelection(); setLocation(point); showMessage("주소에 해당하는 위치를 선택했어요.", "success");
-  } catch (error) { if (version === addressVersion && currentEditor(editor, owner)) showMessage(error.message, "warning"); }
-  finally { if (editor === editorVersion) $("findAddress").disabled = false; }
+    if (await locateAddress()) { clearSelection(); showError(); showMessage("주소에 해당하는 위치를 선택했어요.", "success"); }
+  } catch (error) { showMessage(error.message, "warning"); }
 });
 $("placeImage").addEventListener("change", previewImage);
 $("placePhoto").addEventListener("change", async (event) => {
   const file = event.target.files?.[0]; if (!file) return;
   const version = ++photoVersion, editor = editorVersion, owner = editorOwner;
-  photoBusy = true; $("savePlaceBtn").disabled = true; $("photoStatus").textContent = "사진을 작게 압축하고 있어요…";
+  photoBusy = true; updateSaveButton(); $("photoStatus").textContent = "사진을 작게 압축하고 있어요…";
   try {
     const result = await compressPhoto(file);
     if (version !== photoVersion || !currentEditor(editor, owner)) return;
@@ -281,31 +322,43 @@ $("placePhoto").addEventListener("change", async (event) => {
   } catch (error) {
     if (version !== photoVersion || !currentEditor(editor, owner)) return;
     $("placePhoto").value = ""; $("photoStatus").textContent = error.message; showMessage(error.message, "warning");
-  } finally { if (version === photoVersion && currentEditor(editor, owner)) { photoBusy = false; $("savePlaceBtn").disabled = false; } }
+  } finally { if (version === photoVersion && currentEditor(editor, owner)) { photoBusy = false; updateSaveButton(); } }
 });
 $("clearPlacePhoto").addEventListener("click", () => {
-  photoVersion++; photo = ""; photoBusy = false; $("savePlaceBtn").disabled = false;
+  photoVersion++; photo = ""; photoBusy = false; updateSaveButton();
   $("placePhoto").value = ""; $("placeImage").value = ""; $("photoStatus").textContent = "사진 없이도 기록할 수 있어요."; previewImage();
 });
 $("cancelPlaceEdit").addEventListener("click", () => { if (confirm("입력한 내용을 비우고 새 장소를 기록할까요? 저장된 장소는 유지됩니다.")) openEditor(); });
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault(); showError();
+  if (saveBusy) return;
+  const editor = editorVersion, owner = editorOwner;
   try {
-    if (!editorOpen || editorOwner !== getCurrentUser()?.id) throw new Error("로그인 계정이 변경되었습니다. 등록 창을 다시 열어 주세요.");
+    if (!currentEditor(editor, owner)) throw new Error("로그인 계정이 변경되었습니다. 등록 창을 다시 열어 주세요.");
     if (photoBusy) throw new Error("사진을 처리 중입니다. 잠시 후 저장해 주세요.");
+    if (!validCoordinates($("placeLat").value, $("placeLng").value)) {
+      if (!$("placeAddress").value.trim()) {
+        $("placeAddress").focus();
+        throw new Error("장소의 위치가 필요해요. 관광지를 선택하거나 주소 검색·지도 클릭으로 위치를 정해 주세요.");
+      }
+      saveBusy = true; updateSaveButton();
+      if (!await locateAddress() || !currentEditor(editor, owner)) return;
+      if (photoBusy) throw new Error("사진을 처리 중입니다. 잠시 후 저장해 주세요.");
+    }
     saveHotplace({ id: editingId || undefined, name: $("placeName").value, date: $("visitDate").value,
       type: $("placeType").value, description: $("placeDescription").value, address: $("placeAddress").value,
       imageUrl: $("placeImage").value.trim(), photo, touristPlace: selectedPlace,
       mapy: $("placeLat").value, mapx: $("placeLng").value });
     editorModal().hide(); renderHotplaces(); showMessage("장소를 저장했습니다.", "success");
-  } catch (error) { showError(error.message); }
+  } catch (error) { if (currentEditor(editor, owner)) showError(error.message); }
+  finally { if (currentEditor(editor, owner)) { saveBusy = false; updateSaveButton(); } }
 });
 window.addEventListener("authchange", () => guarded(() => {
   const owner = getCurrentUser()?.id;
   if (editorOpen && editorOwner !== owner) {
     editorOpen = false; editorVersion++; photoVersion++; addressVersion++;
     resetTourSearch(); selectedPlace = null; displaySelection();
-    photo = ""; photoBusy = false; form.reset(); previewImage();
+    photo = ""; photoBusy = false; saveBusy = false; form.reset(); clearLocation(); previewImage();
     editorModal().hide();
   }
   if (detailOwner && detailOwner !== owner) {

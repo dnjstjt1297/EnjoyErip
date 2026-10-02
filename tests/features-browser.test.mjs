@@ -174,8 +174,13 @@ try {
     await page.goto(`${base}/hotplace.html`); await page.click('#newHotplace'); await visible('#hotplaceModal.show');
     await page.fill('#placeName', '내가 찾은 작은 쉼터'); await page.fill('#visitDate', '2026-01-15');
     await page.selectOption('#placeType', '카페'); await page.fill('#placeDescription', '직접 기록한 장소');
-    await page.fill('#placeLat', '37.57'); await page.fill('#placeLng', '126.98');
+    await page.waitForFunction(() => window.__mapTest.maps.some((map) => map.container.id === 'pickMap'));
+    await page.evaluate(() => kakao.maps.event.trigger(window.__mapTest.maps.find((map) => map.container.id === 'pickMap'), 'click', { latLng: new kakao.maps.LatLng(37.57, 126.98) }));
+    assert.equal(Number(await page.inputValue('#placeLat')), 37.57);
+    assert.equal(Number(await page.inputValue('#placeLng')), 126.98);
     await page.click('#savePlaceBtn'); await visible('.hotplace-card');
+    const storedPlace = await page.evaluate(() => JSON.parse(localStorage.getItem('enjoytrip_hotplaces'))[0]);
+    assert.equal(Number(storedPlace.mapy), 37.57); assert.equal(Number(storedPlace.mapx), 126.98);
     assert.equal((await visitRecords()).length, 2);
     assert.match(await page.locator('.hotplace-card').innerText(), /나만의 발견/);
     await saveVisit(page.locator('.hotplace-card .js-visit'));
