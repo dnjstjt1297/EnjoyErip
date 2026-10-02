@@ -1,0 +1,11 @@
+# dependencies and runtime files
+node_modules/
+.env
+*.log
+
+# editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+tmp/

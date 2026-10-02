@@ -1,0 +1,30 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { setupDOM, fill, submit, waitFor } from './helpers.mjs';
+
+test('회원가입, 중복 검증, 로그인 실패/성공, 비밀번호 찾기 전체 흐름', async () => {
+  setupDOM();
+  const { showAuth } = await import('../frontend/assets/js/auth.js');
+  const { readDB, currentUser, setSession, hashSecret } = await import('../frontend/assets/js/storage.js');
+  showAuth('register');
+  fill({ username: 'traveler1', name: '여행자', email: 'travel@example.com', answer: '제주', password: 'Original123!', confirm: 'Original123!' });
+  submit('authForm'); await waitFor(() => currentUser());
+  assert.equal(currentUser().name, '여행자'); assert.equal(readDB().users.length, 1);
+  assert.ok(!localStorage.getItem('enjoytrip.db.v1').includes('Original123!'));
+  assert.ok(!localStorage.getItem('enjoytrip.db.v1').includes('"answer":"제주"'));
+  const id = currentUser().id; setSession(null);
+  showAuth('register');
+  fill({ username: 'traveler1', name: '다른 회원', email: 'other@example.com', answer: '서울', password: 'Original123!', confirm: 'Original123!' });
+  submit('authForm'); await waitFor(() => !document.getElementById('authError').hidden);
+  assert.match(document.getElementById('authError').textContent, /이미/); assert.equal(readDB().users.length, 1);
+  showAuth('login'); fill({ username: 'traveler1', password: 'WrongPassword' }); submit('authForm');
+  await waitFor(() => !document.getElementById('authError').hidden); assert.equal(currentUser(), null);
+  fill({ password: 'Original123!' }); submit('authForm'); await waitFor(() => currentUser()); assert.equal(currentUser().id, id);
+  setSession(null); showAuth('recover');
+  fill({ username: 'traveler1', email: 'travel@example.com', answer: '틀린 답', password: 'Changed456!', confirm: 'Changed456!' }); submit('authForm');
+  await waitFor(() => !document.getElementById('authError').hidden);
+  assert.equal(await hashSecret('Original123!', readDB().users[0].salt), readDB().users[0].passwordHash);
+  fill({ answer: '제주' }); submit('authForm');
+  await waitFor(() => document.getElementById('authTitle').textContent.includes('다음 여행'));
+  fill({ username: 'traveler1', password: 'Changed456!' }); submit('authForm'); await waitFor(() => currentUser()); assert.equal(currentUser().id, id);
+});
