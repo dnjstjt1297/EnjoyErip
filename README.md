@@ -205,7 +205,7 @@ API 호출은 `js/api/tour-api.js`, DOM 이벤트와 화면 갱신은 `js/pages/
 원석 `frontend/assets/css/style.css`, `service.css`의 색상·간격·컴포넌트와 `index.html`, `mypage.html`, `assets/js/app.js`의 화면·인터랙션을 현재 구조에 맞게 적용했습니다. 대표 토큰은 paper `#f5f7ff`, ink `#252c40`, 청록 `#087f91`, CTA gradient `#34445c → #202b40`입니다. Pretendard와 시스템 한글 fallback을 사용합니다.
 
 - **Main:** 중앙 Hero, 원석의 지구·비행기·도시 SVG와 티켓 요소, 부드러운 pointer parallax. 기존 Mood·여권 미리보기는 아래 흐름으로 연결합니다.
-- **검색:** 검색어·검색 버튼과 기존 필터를 그리드로 배치하고, Desktop 카드는 왼쪽 120px 사진 / 오른쪽 정보 구조로 정리했습니다. 모바일 사진 카드는 세로형입니다.
+- **검색:** 하나의 탐색 화면 안에 Desktop 목록 30% / 지도 70%를 배치합니다. 목록은 134px 높이의 행과 96px 사진으로 정리하고 독립 스크롤·하단 페이지네이션을 제공합니다. 제목은 기존 상세보기, 행은 지도 선택, `＋ 여행 계획`은 기존 초안 저장으로 연결합니다. 방문 기록은 작은 보조 버튼으로 유지합니다. 모바일은 지도 아래에 142px 높이의 목록을 배치합니다. 검색어·지역·유형·정렬과 무드 칩을 모으고 대·중·소분류는 상세 필터에서 그대로 사용합니다.
 - **지도:** 큰 지도, 현재 위치·전체 보기, 유형 핀·범례, 카드↔마커 강조를 제공합니다.
 - **사진:** TourAPI의 `firstimage → firstimage2 → 자체 placeholder` 순서를 유지하고, 로딩 중 shimmer·실패 시 대체 화면을 표시합니다.
 - **HotPlace·MyPage:** 원석의 카드/모달 및 7:5 프로필 대시보드 배치를 채택하고, 기존 서비스 함수와 Bootstrap 모달에 연결했습니다.
@@ -255,7 +255,7 @@ HotPlace의 `address`·`photo`·`touristPlace`는 선택적 확장 필드입니�
 
 지도에서는 사용처가 없는 이전 `setPickerLocation`·`clearPickerLocation`·`onMapClick` export와 전용 전역 마커를 제거했습니다. 현재 HotPlace의 독립적인 지도 선택기는 유지하며, `renderMarkers`는 `updateMap` 별칭으로 호환성을 유지합니다.
 
-`js/config.js`의 기존 개인 키는 변경하거나 문서·로그·스크린샷에 복사하지 않습니다. 참고자료·공식 PDF·원석 원본 체크아웃도 수정하지 않습니다. `.git` 없는 현재 작업 폴더에서는 Git 변경 목록 대신 실제 파일과 실행 결과를 확인했습니다.
+`js/config.js`의 기존 개인 키는 변경하거나 문서·로그·스크린샷에 복사하지 않습니다. 참고자료·공식 PDF·원석 원본 체크아웃도 수정하지 않습니다. 원석 통합 당시 `.git`이 없던 작업 폴더는 실제 파일과 실행 결과를 기준으로 확인했습니다. 이후 Trip 화면 변경 전에 게시된 커밋과 동일한 파일 상태로 Git을 연결하고 `checkpoint/before-trip-map-layout` 및 외부 파일 스냅샷을 만들었습니다. Trip 작업은 별도 `ui/trip-map-layout` 브랜치에 보관하며 원격 push하지 않습니다. [Trip 작업·복원 기록](docs/trip-workspace.md)을 참고하세요.
 
 ## 테스트 실행
 
@@ -269,6 +269,7 @@ npm run test:browser
 npm run test:features
 npm run test:integration
 npm run test:hotplace
+npm run test:trip-layout
 ```
 
 - `npm test`: 기존 회원·계획·방문 서비스와 유형 마커·사진·HotPlace 호환성 검증.
@@ -276,6 +277,7 @@ npm run test:hotplace
 - `npm run test:features`: 무드 → 일정 → 명시적 방문 → 여권 흐름, 초기화·중복·취소·계정 격리·반응형 검사. 테스트 서버는 `127.0.0.1:4176`을 사용합니다.
 - `npm run test:integration`: 키워드·기존 필터 조합, 완전한 키워드 거리 계산, 유형 핀·선택·범례 등 통합 회귀 검사. 기본 서버는 `127.0.0.1:4177`입니다.
 - `npm run test:hotplace`: 등록/수정 모달·관광지 연결·사진·CRUD·회원 격리와 MyPage 통계·개인 백업 검사. 기본 서버는 `127.0.0.1:4178`입니다.
+- `npm run test:trip-layout`: 지도 중심 30:70 배치, 행 밀도·사진 fallback·독립 스크롤·제목 상세보기·키보드·전체 보기 선택 해제·모바일 검사. 기본 서버는 `127.0.0.1:4179`입니다.
 
 실연동 검사를 제외한 브라우저 회귀는 모의 TourAPI·Kakao SDK로 실패 응답과 경계 조건까지 재현합니다. 테스트 키는 요청 가로채기에서만 주입하고 개인 `js/config.js`는 덮어쓰지 않습니다. 기존 서버를 쓰려면 각각 `TEST_BASE_URL`, `FEATURE_BASE_URL`, `INTEGRATION_BASE_URL`, `HOTPLACE_BASE_URL`을 설정할 수 있습니다. 브라우저 검사는 순서대로 실행하는 편이 화면 캡처의 자원 경쟁을 줄입니다.
 
@@ -298,6 +300,7 @@ npm run test:browser
 npm run test:features
 npm run test:integration
 npm run test:hotplace
+npm run test:trip-layout
 LIVE_BASE_URL=http://localhost:5500 npm run test:live
 ```
 
@@ -326,15 +329,25 @@ LIVE_BASE_URL=http://localhost:5500 npm run test:live
 
 결과 파일은 `test-results/` 아래 `services-results.txt`, `browser-results.json`, `features-browser-results.json`, `integration-browser-results.json`, `hotplace-results.json`, `live-results.json`입니다. `failedRequests`는 조건 변경·페이지 이동에 따른 의도적인 `net::ERR_ABORTED`를 제외합니다. **모의 응답 회귀와 실제 외부 API 결과를 구분합니다.** 인증·허용 도메인·한도·응답 지연은 로컬 앱 오류와 별도로 확인합니다.
 
+### Trip 화면 재구성 검증
+
+2026-10-02 Trip 전용 HTML·CSS와 화면 이벤트만 수정한 뒤 전체 **120개** 검사를 다시 통과했습니다. 서비스 **39**, 기존 Browser **20**, 무드·여권 **12**, 통합 기능 **16**, HotPlace **11**, 신규 Trip 레이아웃 **9**, 실제 API·Kakao **13**개입니다. 실제 연동의 runtimeErrors·consoleErrors·failedRequests는 모두 **0**입니다.
+
+1440×1000px Desktop에서 목록/지도는 **30:70**, 행 높이는 **134px**, 사진은 **96×96px**이며 첫 화면에 **4행**이 온전히 보입니다. 1920·1440·1024·768·390px에서 가로 넘침이 없습니다. 선택 핀·간결한 정보창·유형 범례는 기존 지도 모듈을 사용합니다. 회원·API·Storage·계획·여권·HotPlace와 공통 CSS는 변경 전 파일을 유지했습니다.
+
+기존 테스트를 삭제하거나 약화하지 않았습니다. 제거한 지도 버튼의 검사는 행 클릭으로 연결하고, 제목 클릭과 키보드 및 중첩 버튼의 동작 분리를 새로 검증했습니다. 실연동 실행에는 `LIVE_SCREENSHOT_DIR=test-results/trip-layout-live`를 지정해 다른 페이지의 기존 캡처를 보존했습니다. 아래 Trip 전용 캡처는 최종 스타일 적용 후 실제 응답으로 별도 생성했습니다.
+
+[Trip 작업·체크포인트·롤백 안내](docs/trip-workspace.md)
+
 ### 최종 실행 화면
 
-아래 15개 이미지는 실제 통합 검증에서 저장한 최신 화면입니다. 관광지와 지도는 실제 TourAPI·Kakao 응답이며, 캡처 속 회원·방문 기록·여행계획·HotPlace는 격리된 QA 브라우저에서 만든 검증용 예시입니다. 일반 사용자에게 미리 채워 넣는 데이터가 아닙니다.
+아래 이미지는 실제 통합 검증에서 저장한 화면입니다. Trip 3개는 지도 중심 화면 재구성 후의 최신 캡처이며, 나머지는 보존한 통합 검증 캡처입니다. 키워드 전용 캡처는 재구성 전 기능 검증 화면입니다. 관광지와 지도는 실제 TourAPI·Kakao 응답이며, 캡처 속 회원·방문 기록·여행계획·HotPlace는 격리된 QA 브라우저에서 만든 검증용 예시입니다. 일반 사용자에게 미리 채워 넣는 데이터가 아닙니다.
 
 | 화면 | 캡처 |
 | --- | --- |
 | 홈 · Travel Mood | [Home Desktop](screenshots/home-final.png) |
-| 여행지 검색 | [Trip Desktop](screenshots/trip-final.png) |
-| 검색 결과 · Kakao Map | [Trip + Map](screenshots/trip-map-final.png) |
+| 여행지 검색 | [Trip Desktop](screenshots/trip-workspace-desktop-final.png) |
+| 검색 결과 · Kakao Map | [Trip + Map](screenshots/trip-workspace-map-final.png) |
 | 키워드 검색 · 유형 핀 | [Keyword Search](screenshots/trip-keyword-final.png) |
 | 여행 여권 · 지역 스탬프 | [Passport](screenshots/passport-final.png) |
 | 여행계획 · 번호 경로 | [Plan](screenshots/plan-final.png) |
@@ -345,7 +358,7 @@ LIVE_BASE_URL=http://localhost:5500 npm run test:live
 | 로그인 모달 | [Login](screenshots/login-final.png) |
 | 마이페이지 | [MyPage](screenshots/mypage-final.png) |
 | 모바일 홈 | [Mobile Home](screenshots/mobile-home-final.png) |
-| 모바일 검색 · 지도 | [Mobile Trip](screenshots/mobile-trip-final.png) |
+| 모바일 검색 · 지도 | [Mobile Trip](screenshots/trip-workspace-mobile-final.png) |
 | 모바일 여행 여권 | [Mobile Passport](screenshots/mobile-passport-final.png) |
 
 `*-mock.png`는 모의 API 회귀 검사의 별도 캡처이며 실제 지도 검증 증거가 아닙니다.

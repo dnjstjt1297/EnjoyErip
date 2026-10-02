@@ -176,7 +176,7 @@ try {
     await screenshot('screenshots/trip-mock.png');
   });
   await check('06 카드→마커·마커→카드 선택, 상세보기 안전한 렌더링', async () => {
-    await page.locator('.tour-card').first().locator('.js-move-map').last().click();
+    await page.locator('.tour-card').first().locator('.place-media').click();
     await assertVisible('.mock-info');
     assert.equal(await page.locator('.tour-card.is-selected').getAttribute('data-id'), '1');
     await page.evaluate(() => window.kakao.maps.event.trigger(window.__mapTest.markers.filter(x => x.map)[1], 'click'));
@@ -345,7 +345,7 @@ try {
     await page.waitForFunction(() => document.querySelectorAll('.tour-card').length === 12 && !document.querySelector('#searchButton').disabled); listDelay = 0;
     assert.ok(await page.locator('#mapLoading').isHidden());
     assert.ok((await page.locator('.tour-card').nth(1).locator('img').getAttribute('src')).endsWith('secondary-test-photo.webp'));
-    await page.locator('.tour-card').first().locator('.js-move-map').last().click(); await assertVisible('#mapSelection');
+    await page.locator('.tour-card').first().locator('.place-media').click(); await assertVisible('#mapSelection');
     const boundsBefore = await page.evaluate(() => window.__mapTest.bounds.length);
     await page.click('#fitMarkersBtn'); assert.ok(await page.evaluate(() => window.__mapTest.bounds.length) > boundsBefore);
     await page.click('#mapLocationBtn'); await page.waitForFunction(() => !document.querySelector('#mapLocationBtn').disabled);

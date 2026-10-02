@@ -40,6 +40,15 @@ let class2Request;
 let class3Request;
 const PAGE_SIZE = 12;
 
+// Search input affordances reuse the existing form submission and API flow.
+function updateKeywordClear() { $("clearKeywordBtn").hidden = !keywordInput.value; }
+keywordInput.addEventListener("input", updateKeywordClear);
+$("clearKeywordBtn").addEventListener("click", () => {
+  keywordInput.value = "";
+  updateKeywordClear();
+  keywordInput.focus();
+});
+
 $("travelMoodChips").innerHTML = moodMarkup();
 function showMood(id = "") {
   activeMood = id;
@@ -98,7 +107,7 @@ function recommendPlace() {
   highlight(recommendedItem);
   focusMarker(recommendedItem.contentid);
   const card = [...tourList.querySelectorAll(".tour-card")].find((node) => node.dataset.id === String(recommendedItem.contentid));
-  scrollToElement(card);
+  revealResult(card);
 }
 $("randomPlaceBtn").addEventListener("click", recommendPlace);
 $("randomDetailBtn").addEventListener("click", () => { if (recommendedItem) showDetail(recommendedItem); });
@@ -129,35 +138,51 @@ function highlight(item, { source = "card" } = {}) {
   tourList.querySelectorAll(".tour-card").forEach((card) => {
     const match = card.dataset.id === String(item.contentid);
     card.classList.toggle("is-selected", match);
+    card.setAttribute("aria-current", String(match));
     if (match) selected = card;
   });
   $("mapSelectionTitle").textContent = item.title;
   $("mapSelection").hidden = false;
-  if (source === "marker") scrollToElement(selected);
+  if (source === "marker") revealResult(selected);
 }
+function revealResult(card) {
+  if (!card) return;
+  if (!matchMedia("(min-width: 992px)").matches) { scrollToElement(card); return; }
+  const listBounds = tourList.getBoundingClientRect();
+  const cardBounds = card.getBoundingClientRect();
+  const offset = cardBounds.top < listBounds.top ? cardBounds.top - listBounds.top
+    : cardBounds.bottom > listBounds.bottom ? cardBounds.bottom - listBounds.bottom : 0;
+  if (offset) tourList.scrollBy({ top: offset, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+}
+function labelVisitActions() {
+  tourList.querySelectorAll(".js-visit").forEach((button) => {
+    button.title = button.textContent.trim();
+  });
+}
+window.addEventListener("visitschange", labelVisitActions);
+window.addEventListener("authchange", labelVisitActions);
 function renderTourList() {
   if (!items.length) {
     tourList.innerHTML = '<div class="empty-state"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="ui-icon"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><h2 class="h5">검색 결과가 없어요</h2><p>지역이나 관광 유형을 바꾸어 다시 검색해 보세요.</p></div>';
     return;
   }
   tourList.innerHTML = items.map((item, index) => `<div class="col-12">
-    <article class="card tour-card overflow-hidden" style="--card-delay:${Math.min(index, 3) * 45}ms" data-index="${index}" data-id="${escapeHtml(item.contentid)}">
+    <article class="card tour-card overflow-hidden" tabindex="0" aria-label="${escapeHtml(item.title || "관광지")} 지도에서 보기" aria-describedby="listInteractionHint" aria-current="false" data-index="${index}" data-id="${escapeHtml(item.contentid)}">
       ${imageMarkup(item.firstimage || item.firstimage2, item.title || "관광지")}
       <div class="card-body">
-        <div class="d-flex align-items-center gap-2 mb-2"><span class="category-tag">${escapeHtml(CONTENT_TYPE_NAMES[item.contenttypeid] || "여행지")}</span>
-          ${query?.arrange === "E" && Number.isFinite(Number(item.dist)) ? `<span class="small text-secondary">${(Number(item.dist) / 1000).toFixed(1)} km</span>` : ""}</div>
-        <h2 class="h5 fw-bold"><button type="button" class="place-title js-move-map">${escapeHtml(item.title || "이름 없음")}</button></h2>
-        <p class="small text-secondary">${escapeHtml([item.addr1, item.addr2].filter(Boolean).join(" ") || "주소 정보 없음")}</p>
-        <div class="d-flex flex-wrap gap-2 tour-actions">
-          <button class="btn btn-outline-secondary btn-sm js-detail" type="button">상세보기</button>
-          <button class="btn btn-outline-primary btn-sm js-move-map" type="button" ${validCoordinates(item.mapy, item.mapx) ? "" : "disabled"}>지도에서 보기</button>
-          <button class="btn btn-primary btn-sm js-add-plan" type="button">＋ 여행계획</button>
+        <div class="tour-meta"><span class="category-tag">${escapeHtml(CONTENT_TYPE_NAMES[item.contenttypeid] || "여행지")}</span>
+          ${query?.arrange === "E" && Number.isFinite(Number(item.dist)) ? `<span class="tour-distance small text-secondary">${(Number(item.dist) / 1000).toFixed(1)} km</span>` : ""}</div>
+        <h2 class="h5 fw-bold"><button type="button" class="place-title js-detail" title="${escapeHtml(item.title || "이름 없음")} 상세보기">${escapeHtml(item.title || "이름 없음")}</button></h2>
+        <p class="tour-address small text-secondary" title="${escapeHtml([item.addr1, item.addr2].filter(Boolean).join(" ") || "주소 정보 없음")}">${escapeHtml([item.addr1, item.addr2].filter(Boolean).join(" ") || "주소 정보 없음")}</p>
+        <div class="tour-actions">
+          <button class="btn btn-primary btn-sm js-add-plan" type="button">＋ 여행 계획</button>
+          ${visitButton("tour", item.contentid)}
         </div>
-        <div class="tour-visit-row">${visitButton("tour", item.contentid)}<a href="./passport.html">여행 여권 ↗</a></div>
       </div>
     </article>
   </div>`).join("");
   enableImageFallbacks(tourList);
+  labelVisitActions();
 }
 
 function invalidateResults() {
@@ -196,6 +221,7 @@ export async function initEnjoyTrip() {
   else setStatus("지역과 관심 있는 관광 유형을 선택해 보세요.");
   const params = new URLSearchParams(location.search);
   keywordInput.value = (params.get("keyword") || "").slice(0, 80);
+  updateKeywordClear();
   const region = params.get("region");
   if (region && [...sidoSelect.options].some((option) => option.value === region)) {
     sidoSelect.value = region; sidoSelect.dispatchEvent(new Event("change", { bubbles: true }));
@@ -285,7 +311,12 @@ $("mapLocationBtn").addEventListener("click", () => {
   }, () => { button.disabled = false; showMessage("위치 권한을 허용한 뒤 다시 시도해 주세요.", "warning"); }, { timeout: 10000, maximumAge: 60000 });
 });
 $("fitMarkersBtn").addEventListener("click", () => {
-  if (!fitAllMarkers()) showMessage("지도에 표시된 여행지가 없습니다. 먼저 검색해 주세요.", "info");
+  if (!fitAllMarkers()) { showMessage("지도에 표시된 여행지가 없습니다. 먼저 검색해 주세요.", "info"); return; }
+  tourList.querySelectorAll(".tour-card").forEach((card) => {
+    card.classList.remove("is-selected");
+    card.setAttribute("aria-current", "false");
+  });
+  $("mapSelection").hidden = true;
 });
 
 async function runSearch(targetPage) {
@@ -309,7 +340,7 @@ async function runSearch(targetPage) {
     if (mapped) { items = mapped; renderTourList(); }
     $("resultCount").textContent = `총 ${totalCount.toLocaleString()}곳의 여행지`;
     $("pagination").hidden = totalCount <= PAGE_SIZE;
-    $("pageInfo").textContent = `${pageNo} / ${Math.max(1, Math.ceil(totalCount / PAGE_SIZE))} 페이지`;
+    $("pageInfo").textContent = `${pageNo} / ${Math.max(1, Math.ceil(totalCount / PAGE_SIZE))}`;
     const missing = items.filter((item) => !validCoordinates(item.mapy, item.mapx)).length;
     setStatus(`${items.length}곳을 불러왔습니다.${query.keyword ? ` ‘${query.keyword}’ 검색 결과입니다.` : ""}${missing ? ` 좌표가 없는 ${missing}곳은 목록에서 확인하세요.` : ""}${query.arrange === "E" ? ` 기준 위치 반경 ${query.radius / 1000}km 검색입니다.` : ""}`, "success");
   } catch (error) {
@@ -365,12 +396,17 @@ tourList.addEventListener("click", (event) => {
   } else if (event.target.closest(".js-add-plan")) {
     addToPlan(item, event.target.closest("button"));
   } else if (event.target.closest(".js-detail")) showDetail(item);
-  else if (!event.target.closest("button") || event.target.closest(".js-move-map")) {
+  else if (!event.target.closest("button")) {
     highlight(item);
     if (focusMarker(item.contentid)) {
       if (matchMedia("(max-width: 991px)").matches) scrollToElement($("map"), "center");
     } else showMessage(validCoordinates(item.mapy, item.mapx) ? "지도를 불러온 뒤 이용하세요." : "위치 정보가 없는 여행지입니다.", "info");
   }
+});
+tourList.addEventListener("keydown", (event) => {
+  if (!event.target.matches(".tour-card") || !["Enter", " "].includes(event.key)) return;
+  event.preventDefault();
+  event.target.click();
 });
 
 // Preview Wonseok's category pin without moving the map or changing selection.
