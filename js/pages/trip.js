@@ -117,6 +117,9 @@ contentTypeSelect.innerHTML = '<option value="">전체 유형</option>' + Object
 
 function setStatus(message, type = "light") {
   $("statusMessage").className = `alert alert-${type} border`;
+  // The list heading already shows the total. Keep the repeated success message
+  // available to screen readers, while search context and warnings stay visible.
+  $("statusMessage").classList.toggle("visually-hidden", type === "success" && /^\d+곳을 불러왔습니다\.$/.test(message));
   $("statusMessage").textContent = message;
 }
 function setBusy(busy) {

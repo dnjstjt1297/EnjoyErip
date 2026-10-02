@@ -95,6 +95,8 @@ try {
     await page.locator('#classificationFilters summary').click();
     assert.equal(await page.inputValue('#selectClass3'), 'NA0101', 'closing advanced filters preserves their values');
     assert.ok((await page.locator('#statusMessage').boundingBox()).height <= 80, 'search feedback stays compact');
+    assert.ok(await page.locator('#statusMessage').evaluate(el => el.classList.contains('visually-hidden')), 'ordinary success is announced without duplicating the list total');
+    assert.match(await page.locator('#resultCount').innerText(), /13/);
   });
   await check('02 1440·1920px 30/70 작업 영역·600px 지도·한 번에 4–6개 행', async () => {
     const evidence = [];
@@ -120,6 +122,7 @@ try {
     assert.ok(Math.max(...data.rowHeights) - Math.min(...data.rowHeights) <= 1, 'fallback and long text cannot expand compact rows');
     assert.ok(Math.max(...data.photoHeights) - Math.min(...data.photoHeights) <= 1, 'all media slots have the same reserved height');
     assert.equal(await page.locator('.tour-card').nth(1).locator('.image-placeholder').count(), 1);
+    assert.equal(await page.locator('.tour-card .image-placeholder').first().evaluate(el => getComputedStyle(el, '::after').content), '"사진 없음"');
     assert.ok((await page.locator('.tour-card').nth(3).locator('img').getAttribute('src')).endsWith('layout-photo.svg'));
   });
   await check('04 목록만 스크롤해도 지도·페이지 버튼 위치가 고정되고 핀이 행으로 연결', async () => {

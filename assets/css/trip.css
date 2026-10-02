@@ -264,6 +264,10 @@
 .page-trip #statusMessage.alert-warning {
   color: #946b20;
 }
+.page-trip #statusMessage.visually-hidden {
+  margin: 0;
+  padding: 0;
+}
 
 /* One workspace: the list scrolls while its heading and pagination stay put. */
 .page-trip .trip-workspace {
@@ -420,7 +424,7 @@
   height: 96px;
   min-height: 0;
   aspect-ratio: 1;
-  border-radius: 9px;
+  border-radius: 12px;
 }
 .page-trip #tourList .tour-card .image-placeholder {
   min-height: 0;
@@ -436,6 +440,14 @@
 }
 .page-trip #tourList .tour-card .image-placeholder small {
   display: none;
+}
+.page-trip #tourList .tour-card .image-placeholder span {
+  display: none;
+}
+.page-trip #tourList .tour-card .image-placeholder::after {
+  content: "사진 없음";
+  color: var(--trip-muted);
+  font-size: 10px;
 }
 .page-trip #tourList .tour-card .card-body {
   min-width: 0;
@@ -555,7 +567,7 @@
   height: 96px;
   min-height: 0;
   aspect-ratio: 1;
-  border-radius: 9px;
+  border-radius: 12px;
 }
 .page-trip #tourList .skeleton-copy {
   gap: 10px;
