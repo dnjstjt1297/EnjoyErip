@@ -1,0 +1,74 @@
+/* Only the aircraft changes; the existing Home composition stays in style.css. */
+.page-index #heroPlane {
+  position: absolute;
+  z-index: 1;
+  left: 68%;
+  right: auto;
+  top: 14%;
+  bottom: auto;
+  width: clamp(280px, 25vw, 380px);
+  height: auto;
+  aspect-ratio: 4 / 3;
+  rotate: 0deg;
+  translate: none;
+  transform: none;
+  transform-origin: center;
+  animation: none;
+  filter: none;
+  pointer-events: none;
+}
+/* Text and the CTA remain above the decorative aircraft without moving. */
+.page-index .hero[data-airplane-hero] .hero-copy {
+  position: relative;
+  z-index: 2;
+}
+.page-index #heroPlane .plane-fallback,
+.page-index #heroPlaneCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 8px #254a591c);
+}
+.page-index #heroPlaneCanvas {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+.page-index #heroPlane[data-model-state="ready"] #heroPlaneCanvas {
+  opacity: 1;
+}
+.page-index #heroPlane[data-model-state="ready"] .plane-fallback {
+  display: none;
+}
+.page-index .is-airplane-ready #heroPlane {
+  left: 0;
+  right: auto;
+  top: 0;
+}
+.page-index [data-flight-running="true"] #heroPlane {
+  will-change: transform;
+}
+@media (max-width: 991.98px) {
+  .page-index #heroPlane {
+    width: 220px;
+  }
+}
+@media (max-width: 575.98px) {
+  .page-index #heroPlane {
+    left: auto;
+    right: 5%;
+    top: 22px;
+    width: 160px;
+  }
+  .page-index .is-airplane-ready #heroPlane {
+    left: 0;
+    right: auto;
+    top: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-index #heroPlane {
+    transform: none !important;
+  }
+}

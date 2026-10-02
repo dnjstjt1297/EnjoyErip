@@ -14,6 +14,7 @@
     />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="stylesheet" href="./assets/css/memories.css" />
+    <link rel="stylesheet" href="./assets/css/home.css" />
   </head>
   <body class="page-index">
     <a class="skip-link" href="#mainContent">본문 바로가기</a>
@@ -57,7 +58,7 @@
     </nav>
 
     <main id="mainContent">
-      <section class="hero" aria-labelledby="heroTitle">
+      <section class="hero" data-airplane-hero aria-labelledby="heroTitle">
         <div class="hero-art" aria-hidden="true">
           <div class="art-layer art-globe">
             <img
@@ -65,14 +66,6 @@
               alt=""
               width="520"
               height="520"
-            />
-          </div>
-          <div class="art-layer art-plane">
-            <img
-              src="./assets/images/plane.svg"
-              alt=""
-              width="460"
-              height="460"
             />
           </div>
           <div class="art-layer art-city">
@@ -89,6 +82,82 @@
             <span>SEO</span><span>↗</span><span>ANYWHERE</span>
           </div>
         </div>
+          <div id="heroPlane" class="hero-airplane art-plane" aria-hidden="true">
+            <canvas
+              id="heroPlaneCanvas"
+              width="720"
+              height="540"
+              aria-hidden="true"
+            ></canvas>
+            <svg
+              class="plane-fallback"
+              viewBox="0 0 240 180"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <defs>
+                <linearGradient
+                  id="planeWing"
+                  x1="88"
+                  y1="15"
+                  x2="145"
+                  y2="167"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stop-color="#97c6ff" />
+                  <stop offset="1" stop-color="#3471d2" />
+                </linearGradient>
+                <linearGradient
+                  id="planeBody"
+                  x1="135"
+                  y1="78"
+                  x2="135"
+                  y2="101"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stop-color="#fff" />
+                  <stop offset="1" stop-color="#d7eae3" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M219 83c10 2 15 5 15 7s-5 5-15 7l-82 3-52 62H67l24-60-47 1-20 25H10l13-34v-8L10 52h14l20 25 47 1-24-60h18l52 62 82 3Z"
+                fill="url(#planeBody)"
+                stroke="#28665f"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <path
+                d="m98 80-28-60h14l53 61-39-1Zm0 20-28 60h14l53-61-39 1Z"
+                fill="url(#planeWing)"
+              />
+              <path
+                d="m44 80-22-25h-8l13 31 17-6Zm0 20-22 25h-8l13-31 17 6Z"
+                fill="#3874cc"
+              />
+              <path
+                d="M37 83h174c11 0 20 4 23 7-3 3-12 7-23 7H37l-10-7 10-7Z"
+                fill="url(#planeBody)"
+              />
+              <path
+                d="M207 84c9 1 13 3 15 6-2 3-6 5-15 6l3-6-3-6Z"
+                fill="#265e5b"
+              />
+              <path
+                d="m94 47 10 4m-6 9 12 4m-16 69 10-4m-6-9 12-4"
+                stroke="#3264a3"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path d="M55 90h136" stroke="#90b5aa" stroke-width="1" />
+              <path
+                d="M55 86h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2m8 0h2"
+                stroke="#467d74"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
         <div class="hero-copy">
           <p class="eyebrow">
             <span class="live-dot" aria-hidden="true"></span> YOUR NEXT JOURNEY

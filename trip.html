@@ -9,6 +9,7 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
       <link rel="stylesheet" href="./assets/css/style.css" />
       <link rel="stylesheet" href="./assets/css/memories.css" />
+      <link rel="stylesheet" href="./assets/css/trip.css" />
     </head>
     <body class="page-trip">
       <a class="skip-link" href="#mainContent">본문 바로가기</a>
@@ -31,27 +32,23 @@
   </div>
 </nav>
 
-      <main id="mainContent" class="container page-main">
-  <div class="page-heading d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
-    <div>
-      <span class="eyebrow">FIND YOUR NEXT PLACE</span><h1 class="section-title h2 mb-1">여행지 찾기</h1>
-      <p class="text-secondary mb-0">어디든 좋아요. 마음이 향하는 곳을 찾아보세요.</p>
-    </div>
+      <main id="mainContent" class="container page-main trip-shell">
+  <div class="page-heading trip-heading">
+    <div><span class="eyebrow">EXPLORE KOREA</span><h1 class="section-title h2">마음이 가는 곳, 지도에서 찾아요</h1></div>
+    <a class="trip-plan-link" href="./plan.html">담은 여행계획 <span aria-hidden="true">↗</span></a>
   </div>
 
-  <section class="travel-mood-panel mb-4" aria-labelledby="moodHeading">
-    <div class="mood-heading"><div><span class="eyebrow">FOLLOW YOUR MOOD</span><h2 id="moodHeading">오늘 어떤 여행이 끌리나요?</h2></div><button id="moodResetBtn" class="btn btn-link btn-sm" type="button" hidden>무드 초기화</button></div>
-    <div id="travelMoodChips" class="mood-chips" role="group" aria-label="여행 무드"></div>
-    <p id="moodDescription" class="mood-description" role="status">기분에 맞는 여행을 고르거나, 아래 필터로 직접 찾아보세요.</p>
-  </section>
-  <section class="card search-card mb-4" aria-label="여행지 검색 필터">
+  <section class="card search-card trip-search-panel" aria-label="여행지 검색 필터">
     <div class="card-body p-4">
-      <form id="searchForm" class="row g-3">
-<div class="col-12 search-caption"><span class="search-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="ui-icon"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><strong>다음 목적지를 찾아볼까요?</strong><span class="small text-secondary ms-auto">EXPLORE KOREA</span></div>
+      <form id="searchForm" class="row g-3 trip-search-form">
         <div class="col-12 keyword-field">
-          <label for="keywordInput" class="form-label">어떤 장소를 찾으세요?</label>
-          <input id="keywordInput" name="keyword" class="form-control" type="search" maxlength="80" placeholder="관광지 이름으로 검색 · 예: 경복궁, 해수욕장" aria-describedby="keywordHint">
-          <p id="keywordHint" class="small text-secondary mt-2 mb-0">검색어만으로 전국을 찾거나, 무드·지역·분류와 함께 좁혀보세요.</p>
+          <label for="keywordInput" class="form-label visually-hidden">관광지 이름 검색</label>
+          <div class="keyword-control">
+            <svg viewBox="0 0 24 24" fill="none" class="ui-icon" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="keywordInput" name="keyword" class="form-control" type="search" maxlength="80" placeholder="가고 싶은 장소를 검색해보세요" aria-describedby="keywordHint" autocomplete="off">
+            <button id="clearKeywordBtn" class="keyword-clear" type="button" aria-label="검색어 지우기" hidden><span aria-hidden="true">×</span></button>
+          </div>
+          <p id="keywordHint" class="visually-hidden">검색어만으로 전국을 찾거나, 무드·지역·분류와 함께 좁혀보세요. Enter를 누르면 검색합니다.</p>
         </div>
         <div class="col-md-3">
           <label for="sidoSelect" class="form-label">시/도</label>
@@ -92,7 +89,7 @@
           <label class="form-label d-none d-md-block">&nbsp;</label>
           <button id="searchButton" class="btn btn-primary" type="submit"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="ui-icon"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span> 검색</button>
         </div>
-        <div class="col-12"><details id="classificationFilters"><summary class="small text-primary">관심 분야로 더 자세히 찾기</summary>
+        <div class="col-12 trip-advanced-fields"><details id="classificationFilters"><summary class="small text-primary">상세 필터</summary>
           <div class="row g-3 mt-1">
             <div class="col-md-4"><label for="selectClass1" class="form-label">대분류</label><select id="selectClass1" class="form-select" data-type="대분류"><option value="">전체 대분류</option></select></div>
             <div class="col-md-4"><label for="selectClass2" class="form-label">중분류</label><select id="selectClass2" class="form-select" data-type="중분류" disabled><option value="">전체 중분류</option></select></div>
@@ -112,15 +109,25 @@
         </div>
       </form>
     </div>
+  <section class="travel-mood-panel trip-mood-strip" aria-labelledby="moodHeading">
+    <div class="mood-heading"><div><h2 id="moodHeading">오늘 어떤 여행이 끌리나요?</h2></div><button id="moodResetBtn" class="btn btn-link btn-sm" type="button" hidden>무드 초기화</button></div>
+    <div id="travelMoodChips" class="mood-chips" role="group" aria-label="여행 무드"></div>
+    <p id="moodDescription" class="mood-description" role="status">기분에 맞는 여행을 고르거나, 아래 필터로 직접 찾아보세요.</p>
+  </section>
   </section>
 
   <div id="statusMessage" class="alert alert-light border d-none" role="status"></div>
 
-  <div class="results-heading d-flex justify-content-between align-items-center mb-3 gap-2"><h2 class="h6 mb-0" id="resultCount" aria-live="polite">여행지를 찾아보세요</h2><div class="result-tools"><button type="button" id="randomPlaceBtn" class="random-button"><span aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 7h.01M17 7h.01M12 12h.01M7 17h.01M17 17h.01" stroke-width="3"/></svg></span> 오늘 어디 가지?</button><a class="small" href="./plan.html">담은 여행계획 →</a></div></div>
+  <div class="explore-layout trip-workspace" aria-label="여행지 목록과 지도">
+    <section class="trip-results-panel" aria-label="관광지 검색 결과">
+      <header class="results-heading">
+        <div><h2 class="h6">여행지</h2><p id="resultCount" aria-live="polite">여행지를 찾아보세요</p></div>
+        <button type="button" id="randomPlaceBtn" class="random-button" aria-label="현재 결과에서 랜덤 여행지 추천" title="오늘 어디 가지?"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 7h.01M17 7h.01M12 12h.01M7 17h.01M17 17h.01" stroke-width="3"/></svg><span>랜덤 추천</span></button>
+        <p id="listInteractionHint" class="visually-hidden">관광지 행을 선택하거나 Enter 또는 Space를 누르면 지도에서 볼 수 있습니다. 관광지 이름을 누르면 상세 정보가 열립니다.</p>
+      </header>
   <section id="randomRecommendation" class="random-recommendation" aria-live="polite" hidden><span class="random-symbol" aria-hidden="true"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 7h.01M17 7h.01M12 12h.01M7 17h.01M17 17h.01" stroke-width="3"/></svg></span><div><span class="eyebrow">A LITTLE SERENDIPITY</span><h2 id="randomTitle" class="h5"></h2><p id="randomDescription" class="small text-secondary mb-0"></p></div><button type="button" class="btn btn-outline-primary btn-sm" id="randomDetailBtn">이곳 살펴보기 ↗</button></section>
-  <div class="row g-4 explore-layout">
-    <div class="col-lg-5">
-      <div id="tourList" class="row g-3">
+
+      <div id="tourList" class="row g-3" aria-label="관광지 목록">
         <div class="empty-state">
           <span class="empty-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="ui-icon"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg></span><h2 class="h5">여행의 시작은 작은 호기심</h2><p>지역과 취향을 선택하면<br>당신에게 어울리는 여행지를 보여드릴게요.</p>
         </div>
@@ -128,10 +135,10 @@
       <nav id="pagination" class="d-flex justify-content-between align-items-center gap-2 mt-3" aria-label="검색 결과 페이지" hidden>
         <button id="prevPage" type="button" class="btn btn-outline-secondary btn-sm" disabled>← 이전</button><span id="pageInfo" class="small"></span><button id="nextPage" type="button" class="btn btn-outline-secondary btn-sm" disabled>다음 →</button>
       </nav>
-    </div>
-    <div class="col-lg-7 map-column">
+    </section>
+    <section class="map-column trip-map-panel" aria-label="관광지 지도 탐색">
       <div class="map-sticky"><div class="map-frame"><div class="map-topline"><span><span class="live-dot" aria-hidden="true"></span> 여행 지도</span><span class="small">EXPLORE ON MAP</span></div><div id="map" aria-label="관광지 지도"></div><div class="map-toolbar" aria-label="지도 컨트롤"><button id="mapLocationBtn" type="button" class="map-control" aria-label="현재 위치로 지도 이동"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="ui-icon"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.7"/></svg> <span>현재 위치</span></button><button id="fitMarkersBtn" type="button" class="map-control"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true" class="ui-icon"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> <span>전체 보기</span></button></div><div id="mapSelection" class="map-selection" hidden><span class="selection-dot" aria-hidden="true"></span><span id="mapSelectionTitle"></span><span class="small text-secondary">선택한 여행지</span></div><div id="mapLoading" class="map-loading" role="status" hidden><span class="loading-ring" aria-hidden="true"></span><strong>지도에 여행지를 표시하고 있어요</strong></div></div><p class="small text-secondary mt-2">관광 정보·사진: 한국관광공사 TourAPI · 지도: Kakao</p></div>
-    </div>
+    </section>
   </div>
 </main>
 

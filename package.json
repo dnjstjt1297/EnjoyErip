@@ -8,7 +8,8 @@
     "test:live": "node tests/live-browser.test.mjs",
     "test:features": "node tests/features-browser.test.mjs",
     "test:integration": "node tests/integration-browser.test.mjs",
-    "test:hotplace": "node tests/hotplace-browser.test.mjs"
+    "test:hotplace": "node tests/hotplace-browser.test.mjs",
+    "test:trip-layout": "node tests/trip-layout.test.mjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

@@ -1,0 +1,995 @@
+/* Trip's compact explorer. Shared pages and Kakao's generated DOM stay intact. */
+.page-trip .trip-shell {
+  --trip-line: #e5ecee;
+  --trip-soft: #f4f8f8;
+  --trip-ink: #273b42;
+  --trip-muted: #5f7479;
+  max-width: 1680px;
+  padding: 18px 24px 24px;
+}
+.page-trip .trip-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 12px !important;
+  padding-bottom: 0;
+}
+.page-trip .trip-heading h1 {
+  margin: 0 !important;
+  font-size: 24px;
+  letter-spacing: -0.06em;
+}
+.page-trip .trip-heading .eyebrow {
+  display: none;
+}
+.page-trip .trip-heading p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-sub);
+}
+.page-trip .trip-heading > a {
+  margin-left: auto;
+  font-size: 12px;
+  text-decoration: none;
+}
+.page-trip .trip-search-panel {
+  overflow: hidden;
+  border: 1px solid var(--trip-line);
+  border-radius: 14px;
+  margin-bottom: 8px !important;
+  box-shadow: 0 3px 12px #244c4b04;
+}
+.page-trip .trip-search-panel > .card-body {
+  padding: 12px 14px 9px !important;
+}
+.page-trip #searchForm {
+  display: grid;
+  grid-template-columns:
+    minmax(240px, 2.25fr) repeat(2, minmax(100px, 1fr))
+    minmax(120px, 1.15fr) minmax(98px, 0.9fr) 88px;
+  align-items: end;
+  gap: 8px 10px;
+  margin: 0;
+}
+.page-trip #searchForm > * {
+  grid-column: auto;
+  grid-row: auto;
+  min-width: 0;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+.page-trip #searchForm .form-label {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 650;
+  color: var(--trip-muted);
+  line-height: 1.3;
+}
+.page-trip #searchForm .form-control,
+.page-trip #searchForm .form-select {
+  min-height: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border-color: #e1e8eb;
+  background-color: #fff;
+  font-size: 12px;
+  padding-block: 7px;
+  padding-left: 11px;
+}
+.page-trip #searchForm .form-select {
+  padding-right: 28px;
+  background-position: right 9px center;
+  background-size: 12px 9px;
+}
+.page-trip #searchForm .form-control:focus,
+.page-trip #searchForm .form-select:focus {
+  border-color: #6bb6b0;
+  box-shadow: 0 0 0 3px #168d8612;
+}
+.page-trip .keyword-control {
+  position: relative;
+  min-width: 0;
+}
+.page-trip .keyword-control > svg,
+.page-trip .keyword-control > .ui-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  width: 17px;
+  height: 17px;
+  transform: translateY(-50%);
+  color: #799298;
+  pointer-events: none;
+}
+.page-trip #searchForm #keywordInput {
+  padding-left: 36px;
+  padding-right: 36px;
+  background-color: #f5f9f9;
+}
+.page-trip #keywordInput::placeholder {
+  color: var(--trip-muted);
+  opacity: 1;
+}
+.page-trip #keywordInput::-webkit-search-cancel-button {
+  appearance: none;
+}
+.page-trip #clearKeywordBtn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  color: #789097;
+  background: transparent;
+  font-size: 18px;
+}
+.page-trip #clearKeywordBtn:hover {
+  color: var(--primary-dark);
+  background: #e4efee;
+}
+.page-trip #searchForm > .search-submit {
+  align-self: end;
+  padding: 0;
+}
+.page-trip #searchButton {
+  min-height: 40px;
+  height: 40px;
+  padding: 7px 10px;
+  margin: 0;
+  border-radius: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: none;
+}
+.page-trip #searchForm > .trip-advanced-fields,
+.page-trip #searchForm > #distanceOptions {
+  grid-column: 1 / -1;
+}
+.page-trip #classificationFilters {
+  border: 0;
+  padding-top: 0;
+}
+.page-trip #classificationFilters summary {
+  min-height: 22px;
+  display: list-item;
+  align-content: center;
+  font-size: 11px !important;
+  color: #5f7c82 !important;
+}
+.page-trip #classificationFilters[open] {
+  padding-bottom: 5px;
+}
+.page-trip #classificationFilters .row,
+.page-trip #distanceOptions .row {
+  --bs-gutter-x: 14px;
+  --bs-gutter-y: 8px;
+}
+.page-trip #classificationFilters p,
+.page-trip #locationStatus {
+  font-size: 11px !important;
+  line-height: 1.5;
+}
+.page-trip #distanceOptions .row {
+  padding-top: 8px !important;
+}
+.page-trip #useLocationBtn {
+  min-height: 40px;
+  padding-block: 7px;
+  font-size: 12px;
+}
+.page-trip .trip-mood-strip {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin: 0 !important;
+  padding: 8px 14px;
+  border: 0;
+  border-top: 1px solid var(--trip-line);
+  border-radius: 0;
+  background: #f8fbfb;
+}
+.page-trip .trip-mood-strip .mood-heading {
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+.page-trip .trip-mood-strip .eyebrow {
+  display: none;
+}
+.page-trip .trip-mood-strip h2 {
+  margin: 0;
+  color: var(--trip-muted);
+  font-size: 11px;
+  letter-spacing: -0.03em;
+}
+.page-trip .trip-mood-strip #moodResetBtn {
+  min-height: 28px;
+  padding: 2px 4px;
+  font-size: 10px;
+}
+.page-trip .trip-mood-strip .mood-chips {
+  gap: 5px;
+}
+.page-trip .trip-mood-strip .mood-chip {
+  gap: 5px;
+  min-height: 30px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  border-color: #e4ecee;
+  background: #fff;
+  font-size: 11px;
+  line-height: 1.4;
+  box-shadow: none;
+}
+.page-trip .trip-mood-strip .mood-chip > span {
+  font-size: 13px;
+}
+.page-trip .trip-mood-strip .mood-chip[aria-pressed="true"] {
+  border-color: #77bcb5;
+  color: #146e69;
+  background: #e2f3ef;
+}
+.page-trip .trip-mood-strip .mood-description {
+  flex: 1 1 250px;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--trip-muted);
+}
+.page-trip #statusMessage {
+  padding: 4px 2px;
+  margin: 0 0 7px;
+  border: 0 !important;
+  background: transparent;
+  color: var(--trip-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.page-trip #statusMessage.alert-danger {
+  color: #b54848;
+}
+.page-trip #statusMessage.alert-warning {
+  color: #946b20;
+}
+.page-trip #statusMessage.visually-hidden {
+  margin: 0;
+  padding: 0;
+}
+
+/* One workspace: the list scrolls while its heading and pagination stay put. */
+.page-trip .trip-workspace {
+  display: grid;
+  grid-template-columns: minmax(365px, 3fr) minmax(0, 7fr);
+  align-items: stretch;
+  height: clamp(700px, calc(100dvh - 280px), 860px);
+  min-height: 700px;
+  margin: 0;
+  gap: 0;
+  border: 1px solid #dde7e9;
+  border-radius: 15px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 6px 26px #25444b05;
+}
+.page-trip .trip-workspace > * {
+  min-width: 0;
+  min-height: 0;
+  width: auto;
+  padding: 0;
+  margin: 0;
+}
+.page-trip .trip-results-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-right: 1px solid var(--trip-line);
+}
+.page-trip .trip-results-panel .results-heading {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center !important;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start !important;
+  gap: 5px 8px !important;
+  min-height: 52px;
+  padding: 10px 14px;
+  margin: 0 !important;
+  border-bottom: 1px solid var(--trip-line);
+}
+.page-trip .trip-results-panel .results-heading h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 750;
+}
+.page-trip #resultCount {
+  min-width: 0;
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--trip-muted);
+}
+.page-trip #randomPlaceBtn {
+  flex-shrink: 0;
+  min-height: 30px;
+  padding: 4px 7px;
+  margin-left: auto;
+  border-radius: 7px;
+  background: #f1f7f6;
+  color: #517f7d;
+  font-size: 10px;
+}
+.page-trip #randomRecommendation {
+  flex: 0 0 auto;
+  gap: 8px;
+  padding: 10px 12px;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid #ebe6cb;
+  border-radius: 0;
+  flex-wrap: nowrap;
+}
+.page-trip #randomRecommendation > div {
+  min-width: 0;
+}
+.page-trip #randomRecommendation .random-symbol {
+  font-size: 19px;
+}
+.page-trip #randomRecommendation .eyebrow {
+  display: none;
+}
+.page-trip #randomTitle {
+  margin: 0 0 3px;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.page-trip #randomDescription {
+  font-size: 10px !important;
+  line-height: 1.4;
+}
+.page-trip #randomDetailBtn {
+  min-height: 30px;
+  padding: 5px 7px;
+  font-size: 10px;
+}
+.page-trip #tourList {
+  --bs-gutter-x: 0;
+  --bs-gutter-y: 0;
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #c7d9d8 #f7fafa;
+  scroll-padding-block: 8px;
+}
+.page-trip #tourList > * {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.page-trip #tourList .tour-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  height: 134px;
+  min-height: 134px;
+  padding: 11px 13px;
+  border: 0;
+  border-bottom: 1px solid #edf1f1;
+  border-radius: 0;
+  background: #fff;
+  box-shadow: none;
+  transform: none;
+  scroll-margin: 8px 0;
+  transition:
+    background-color 0.18s,
+    box-shadow 0.18s;
+}
+.page-trip #tourList .tour-card:hover {
+  background: #f7fbfa;
+  transform: none;
+  box-shadow: inset 3px 0 #b9dcd7;
+}
+.page-trip #tourList .tour-card.is-selected {
+  background: #ecf7f4;
+  box-shadow: inset 3px 0 #118b82;
+}
+.page-trip #tourList .tour-card:focus-visible {
+  outline-offset: -3px;
+}
+.page-trip #tourList .tour-card > .place-media {
+  width: 96px;
+  height: 96px;
+  min-height: 0;
+  aspect-ratio: 1;
+  border-radius: 12px;
+}
+.page-trip #tourList .tour-card .image-placeholder {
+  min-height: 0;
+  gap: 2px;
+  padding: 8px;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.page-trip #tourList .tour-card .image-placeholder svg {
+  width: 27px;
+  height: 27px;
+  margin: 0 0 3px;
+}
+.page-trip #tourList .tour-card .image-placeholder small {
+  display: none;
+}
+.page-trip #tourList .tour-card .image-placeholder span {
+  display: none;
+}
+.page-trip #tourList .tour-card .image-placeholder::after {
+  content: "사진 없음";
+  color: var(--trip-muted);
+  font-size: 10px;
+}
+.page-trip #tourList .tour-card .card-body {
+  min-width: 0;
+  padding: 0;
+}
+.page-trip .tour-meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 15px;
+  margin: 0 0 3px;
+  line-height: 1.4;
+}
+.page-trip .tour-meta .category-tag {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--trip-muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+.page-trip .tour-distance {
+  font-size: 9px;
+}
+.page-trip #tourList .tour-card h2 {
+  margin: 0 0 3px;
+  font-size: 13px;
+  line-height: 1.35;
+}
+.page-trip .tour-card .place-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  width: 100%;
+  overflow: hidden;
+  color: var(--trip-ink);
+  font-weight: 750;
+  font-size: inherit;
+  line-height: 1.35;
+}
+.page-trip .tour-card .place-title:hover {
+  color: #087e78;
+}
+.page-trip #tourList .tour-card .tour-address {
+  min-height: 15px;
+  margin: 0 0 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--trip-muted) !important;
+  font-size: 10px !important;
+  line-height: 1.5;
+}
+.page-trip .tour-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+  padding: 0;
+  border: 0;
+}
+.page-trip .tour-actions .js-add-plan {
+  min-height: 30px;
+  padding: 5px 10px;
+  margin: 0;
+  border: 0;
+  border-radius: 6px;
+  background: #168c82;
+  color: #fff;
+  box-shadow: none;
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.page-trip .tour-actions .js-add-plan:hover {
+  background: #0c766e;
+}
+.page-trip .tour-actions .visit-button {
+  display: inline-grid;
+  flex: 0 0 32px;
+  place-items: center;
+  min-height: 32px;
+  height: 32px;
+  width: 32px;
+  padding: 0;
+  border: 1px solid #e1e9e8;
+  border-radius: 6px;
+  background: #f8fbfa;
+  color: var(--trip-muted);
+  font-size: 0;
+  line-height: 0;
+}
+.page-trip .tour-actions .visit-button::before {
+  content: "✓";
+  font-size: 16px;
+  line-height: 1;
+}
+.page-trip .tour-actions .visit-button:hover,
+.page-trip .tour-actions .visit-button.is-visited {
+  background: #e0f1eb;
+  border-color: #9acdc0;
+  color: #138476;
+}
+.page-trip #tourList .skeleton-card {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  height: 134px;
+  min-height: 134px;
+  gap: 12px;
+  padding: 11px 13px;
+  border: 0;
+  border-bottom: 1px solid #edf1f1;
+  border-radius: 0;
+}
+.page-trip #tourList .skeleton-photo {
+  height: 96px;
+  min-height: 0;
+  aspect-ratio: 1;
+  border-radius: 12px;
+}
+.page-trip #tourList .skeleton-copy {
+  gap: 10px;
+  padding: 0;
+}
+.page-trip #tourList .skeleton-line {
+  height: 10px;
+}
+.page-trip #tourList .empty-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  min-height: 240px;
+  padding: 30px 22px;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+}
+.page-trip #tourList .empty-state h2 {
+  font-size: 15px;
+}
+.page-trip #tourList .empty-state p {
+  font-size: 12px;
+}
+.page-trip #pagination {
+  flex: 0 0 auto;
+  min-height: 48px;
+  margin: 0 !important;
+  padding: 8px 12px;
+  border: 0;
+  border-top: 1px solid var(--trip-line);
+  border-radius: 0;
+  background: #fff;
+}
+.page-trip #pagination .btn {
+  min-height: 30px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  font-size: 10px;
+}
+.page-trip #pageInfo {
+  font-size: 10px;
+}
+
+/* The map owns the larger column; overlays stay above Kakao, outside its DOM. */
+.page-trip .trip-map-panel {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+.page-trip .trip-map-panel .map-sticky {
+  position: static;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+.page-trip .trip-map-panel .map-frame {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.page-trip .map-topline {
+  flex: 0 0 40px;
+  height: 40px;
+  padding-inline: 15px;
+  color: #53767b;
+  font-size: 11px;
+}
+.page-trip .map-topline > .small {
+  font-size: 8px;
+  color: var(--trip-muted);
+}
+.page-trip #map {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 600px;
+  width: 100%;
+}
+.page-trip .map-frame + p {
+  flex: 0 0 auto;
+  padding: 5px 14px;
+  margin: 0 !important;
+  color: var(--trip-muted) !important;
+  font-size: 9px !important;
+  line-height: 1.5;
+}
+.page-trip .map-toolbar {
+  top: 52px;
+  right: 12px;
+  gap: 5px;
+}
+.page-trip .map-control {
+  min-height: 34px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  border-color: #e1e9eb;
+  box-shadow: 0 2px 8px #24444712;
+}
+.page-trip .map-control span {
+  font-size: 10px;
+}
+.page-trip .map-loading {
+  inset: 40px 0 0;
+  font-size: 12px;
+}
+.page-trip .map-legend {
+  flex: 0 0 auto;
+  padding: 7px 12px;
+  gap: 4px 12px;
+  font-size: 10px;
+}
+.page-trip .map-legend img {
+  width: 16px;
+  height: 20px;
+}
+.page-trip .map-selection {
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  gap: 9px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  box-shadow: 0 3px 12px #24444714;
+}
+.page-trip .map-frame:has(> .map-legend:not([hidden])) .map-selection {
+  bottom: 64px;
+}
+.page-trip .map-selection > .small {
+  font-size: 9px;
+}
+.page-trip .map-info {
+  width: 230px;
+  padding: 11px 13px;
+}
+.page-trip .map-info .place-media {
+  display: none;
+}
+.page-trip .map-info-category {
+  margin-bottom: 4px;
+  font-size: 10px;
+}
+.page-trip .map-info strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.page-trip .map-info p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.page-trip .footer {
+  margin-top: 12px !important;
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .page-trip .trip-shell {
+    padding-inline: 16px;
+  }
+  .page-trip #searchForm {
+    grid-template-columns:
+      minmax(210px, 1.8fr) repeat(2, minmax(80px, 1fr))
+      minmax(100px, 1.1fr) minmax(85px, 0.9fr) 74px;
+    gap: 8px;
+  }
+  .page-trip .trip-workspace {
+    grid-template-columns: 340px minmax(0, 1fr);
+  }
+  .page-trip #tourList .tour-card,
+  .page-trip #tourList .skeleton-card {
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 10px;
+    padding-inline: 11px;
+  }
+  .page-trip #tourList .tour-card > .place-media {
+    width: 90px;
+    height: 96px;
+  }
+  .page-trip .trip-results-panel .results-heading {
+    padding-inline: 11px;
+    gap: 5px !important;
+  }
+  .page-trip #randomPlaceBtn {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .page-trip .trip-shell {
+    padding: 16px 18px 20px;
+  }
+  .page-trip #searchForm {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .page-trip #searchForm > .keyword-field {
+    grid-column: 1 / 4;
+    grid-row: 1;
+  }
+  .page-trip #searchForm > .search-submit {
+    grid-column: 4;
+    grid-row: 1;
+  }
+  .page-trip #searchForm > .col-md-3,
+  .page-trip #searchForm > .col-md-2 {
+    grid-column: auto;
+    grid-row: 2;
+  }
+  .page-trip .trip-workspace {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+  }
+  .page-trip .trip-map-panel {
+    order: -1;
+    border-bottom: 1px solid var(--trip-line);
+  }
+  .page-trip .trip-results-panel {
+    border-right: 0;
+  }
+  .page-trip #map {
+    flex: none;
+    min-height: 0;
+    height: 400px;
+  }
+  .page-trip #tourList {
+    flex: none;
+    overflow: visible;
+  }
+  .page-trip #tourList .tour-card,
+  .page-trip #tourList .skeleton-card {
+    grid-template-columns: 100px minmax(0, 1fr);
+    height: 142px;
+    min-height: 142px;
+    padding: 13px 15px;
+  }
+  .page-trip #tourList .tour-card > .place-media {
+    width: 100px;
+    height: 100px;
+  }
+  .page-trip #tourList .tour-card h2 {
+    font-size: 14px;
+  }
+  .page-trip .tour-actions .js-add-plan,
+  .page-trip .tour-actions .visit-button {
+    min-height: 36px;
+    height: 36px;
+  }
+  .page-trip .tour-actions .visit-button {
+    width: 36px;
+    flex-basis: 36px;
+  }
+  .page-trip #pagination {
+    padding-block: 10px;
+  }
+  .page-trip #pagination .btn {
+    min-height: 38px;
+    padding-inline: 12px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .page-trip .trip-shell {
+    padding: 13px 12px 18px;
+  }
+  .page-trip .trip-heading {
+    gap: 4px 10px;
+    margin-bottom: 11px;
+  }
+  .page-trip .trip-heading h1 {
+    font-size: 21px;
+  }
+  .page-trip .trip-heading p {
+    order: 3;
+    flex-basis: 100%;
+    font-size: 11px;
+  }
+  .page-trip .trip-heading > a {
+    font-size: 10px;
+  }
+  .page-trip .trip-search-panel > .card-body {
+    padding: 10px !important;
+  }
+  .page-trip #searchForm {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px 8px;
+  }
+  .page-trip #searchForm > .keyword-field {
+    grid-column: 1 / -1;
+  }
+  .page-trip #searchForm > .col-md-3,
+  .page-trip #searchForm > .col-md-2 {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .page-trip #searchForm > .search-submit {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+  .page-trip #searchForm .form-label {
+    font-size: 10px;
+  }
+  .page-trip #searchForm .form-control,
+  .page-trip #searchForm .form-select {
+    height: 40px;
+    font-size: 12px;
+  }
+  .page-trip #searchButton {
+    min-height: 42px;
+    height: 42px;
+  }
+  .page-trip .trip-mood-strip {
+    gap: 6px;
+    padding: 9px 10px;
+  }
+  .page-trip .trip-mood-strip .mood-heading {
+    flex-basis: 100%;
+    justify-content: space-between;
+  }
+  .page-trip .trip-mood-strip .mood-chips {
+    gap: 5px;
+  }
+  .page-trip .trip-mood-strip .mood-chip {
+    min-height: 36px;
+    padding: 7px 9px;
+    font-size: 10px;
+    gap: 4px;
+  }
+  .page-trip .trip-mood-strip .mood-description {
+    flex-basis: 100%;
+    white-space: normal;
+    font-size: 9px;
+  }
+  .page-trip #statusMessage {
+    font-size: 10px;
+  }
+  .page-trip .trip-workspace {
+    border-radius: 12px;
+  }
+  .page-trip #map {
+    height: 360px;
+  }
+  .page-trip .map-topline {
+    padding-inline: 11px;
+  }
+  .page-trip .map-toolbar {
+    right: 9px;
+    top: 50px;
+  }
+  .page-trip .map-control {
+    min-height: 38px;
+    padding: 8px;
+  }
+  .page-trip .map-control span {
+    font-size: 10px;
+  }
+  .page-trip .map-legend {
+    gap: 4px 10px;
+    padding: 7px 10px;
+    font-size: 9px;
+  }
+  .page-trip .map-selection {
+    left: 9px;
+    right: 9px;
+    padding: 9px 11px;
+  }
+  .page-trip .map-frame:has(> .map-legend:not([hidden])) .map-selection {
+    bottom: 80px;
+  }
+  .page-trip .map-selection > .small {
+    display: none;
+  }
+  .page-trip .map-info {
+    width: 210px;
+  }
+  .page-trip .trip-results-panel .results-heading {
+    min-height: 50px;
+    padding: 9px 11px;
+    flex-direction: row !important;
+    gap: 5px 7px !important;
+  }
+  .page-trip #randomPlaceBtn {
+    padding-inline: 6px;
+    font-size: 9px;
+  }
+  .page-trip #tourList .tour-card,
+  .page-trip #tourList .skeleton-card {
+    grid-template-columns: 90px minmax(0, 1fr);
+    gap: 11px;
+    height: 142px;
+    min-height: 142px;
+    padding: 11px;
+  }
+  .page-trip #tourList .tour-card > .place-media {
+    width: 90px;
+    height: 100px;
+  }
+  .page-trip #tourList .tour-card h2 {
+    font-size: 13px;
+  }
+  .page-trip #tourList .tour-card .tour-address {
+    margin-bottom: 6px;
+  }
+  .page-trip .tour-actions .js-add-plan {
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+  .page-trip #tourList .skeleton-photo {
+    height: 100px;
+  }
+  .page-trip .map-unavailable {
+    padding: 28px 18px;
+  }
+}

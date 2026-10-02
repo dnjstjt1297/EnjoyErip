@@ -64,6 +64,13 @@
 .hot-tour-selected { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; background: var(--primary-light); border: 1px solid var(--border); border-radius: 9px; padding: 11px 13px; color: var(--primary-dark); font-size: .76rem; margin-top: 13px; }
 .hot-tour-selected .btn { min-height: 34px; padding: 4px 0; font-size: .69rem; }
 .hotplace-pick-map { height: 260px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface-soft); }
+.hotplace-location-heading { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.hotplace-location-heading h3 { margin: 0; font-size: .8rem; font-weight: 650; }
+.hotplace-location-heading > span { border-radius: 5px; padding: 2px 6px; background: var(--surface-soft); color: var(--text-sub); font-size: .65rem; }
+.hotplace-location-status { margin: 0 0 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-soft); color: var(--text-sub); font-size: .76rem; line-height: 1.7; }
+.hotplace-location-status[data-state="ready"] { background: var(--primary-light); border-color: #b0d8cf; color: var(--primary-dark); }
+.hotplace-location-status[data-state="ready"]::before { content: "✓ "; font-weight: 750; }
+.hotplace-location-status[data-state="loading"] { color: var(--primary-dark); }
 .hotplace-pick-map .map-unavailable { padding: 20px; min-height: 0; font-size: .75rem; }
 .hotplace-modal .image-preview { height: 200px; min-height: 200px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); overflow: hidden; }
 .hotplace-modal .image-preview .place-media { height: 100%; }

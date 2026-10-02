@@ -3,6 +3,7 @@ import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 const base = process.env.LIVE_BASE_URL || 'http://localhost:5500';
+const screenshotDir = process.env.LIVE_SCREENSHOT_DIR || 'screenshots';
 const results = [], pageErrors = [], consoleErrors = [], requestFailures = [];
 let browser, page;
 const clean = (text) => String(text).replace(/https?:\/\/[^\s"')]+/g, (url) => { try { return new URL(url).origin + new URL(url).pathname; } catch { return '[URL]'; } }).slice(0, 400);
@@ -22,7 +23,7 @@ async function snap(name, fullPage = true) {
   });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(200);
-  await page.screenshot({ path: `screenshots/${name}.png`, fullPage, animations: 'disabled' });
+  await page.screenshot({ path: `${screenshotDir}/${name}.png`, fullPage, animations: 'disabled' });
 }
 async function search() {
   await page.click('#searchButton');
@@ -34,7 +35,7 @@ async function imageReady() {
   await page.waitForFunction(() => { const img = document.querySelector('.tour-card img'); return !img || img.complete; }, {}, { timeout: 20000 });
 }
 try {
-  await mkdir('test-results', { recursive: true }); await mkdir('screenshots', { recursive: true });
+  await mkdir('test-results', { recursive: true }); await mkdir(screenshotDir, { recursive: true });
   browser = await chromium.launch();
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 }, locale: 'ko-KR', geolocation: { latitude: 37.5796, longitude: 126.977 }, permissions: ['geolocation'] });
   // Live Server otherwise reloads the page when a screenshot/report is written.
@@ -75,7 +76,7 @@ try {
     assert.equal(await page.locator('.tour-card').count(), 12);
     const evidence = await page.evaluate(async () => ({ cards: document.querySelectorAll('.tour-card').length, markers: (await import('./js/map/kakao-map.js')).markers.length, imageLoaded: !!document.querySelector('.tour-card img')?.naturalWidth }));
     assert.ok(evidence.markers > 0); assert.ok(evidence.imageLoaded);
-    await page.locator('.tour-card').first().locator('.js-move-map').last().click();
+    await page.locator('.tour-card').first().locator('.place-media').click();
     await page.locator('.tour-card.is-selected').waitFor(); await page.locator('#mapSelection').waitFor();
     await page.evaluate(async () => { const { markers } = await import('./js/map/kakao-map.js'); kakao.maps.event.trigger(markers[1], 'click'); });
     assert.equal(await page.locator('.tour-card.is-selected').count(), 1);
@@ -127,8 +128,15 @@ try {
     const place = places[0];
     await page.fill('#placeName', place.title); await page.fill('#visitDate', '2026-10-01'); await page.selectOption('#placeType', '명소');
     await page.fill('#placeDescription', '골목을 걷다가 만난 서울의 또 다른 모습. 다음 여행에도 다시 들르고 싶은 곳.');
-    await page.fill('#placeImage', place.firstimage); await page.fill('#placeLat', place.mapy); await page.fill('#placeLng', place.mapx);
+    await page.fill('#placeImage', place.firstimage);
+    assert.ok(place.addr1, 'the selected real attraction provides an address');
+    await page.fill('#placeAddress', place.addr1); await page.click('#findAddress');
+    await page.waitForFunction(() => !document.querySelector('#findAddress').disabled);
+    const selectedPosition = { lat: Number(await page.inputValue('#placeLat')), lng: Number(await page.inputValue('#placeLng')) };
+    assert.ok(selectedPosition.lat > 33 && selectedPosition.lat < 39 && selectedPosition.lng > 124 && selectedPosition.lng < 132, 'real address search supplies Korean map coordinates');
     await page.click('#savePlaceBtn'); await page.locator('.hotplace-card').waitFor(); await page.waitForTimeout(1000); await snap('hotplace-live');
+    const storedPlace = await page.evaluate(() => JSON.parse(localStorage.getItem('enjoytrip_hotplaces'))[0]);
+    assert.equal(Number(storedPlace.mapy), selectedPosition.lat); assert.equal(Number(storedPlace.mapx), selectedPosition.lng);
     await page.goto(`${base}/mypage.html`); await page.locator('#profileCard').waitFor(); await snap('mypage');
     return { persistedPlan: true, numberedRoute: 3, hotplace: true };
   });
@@ -233,10 +241,10 @@ try {
     await page.waitForFunction(() => document.querySelector('#distanceOrigin').value === 'current'); await search();
     assert.ok(await page.locator('.tour-card').count());
     assert.match(await page.locator('#statusMessage').innerText(), /공원.*10km/);
-    const distances = await page.locator('.tour-card .card-body > div:first-child .text-secondary').allTextContents();
+    const distances = await page.locator('.tour-card .tour-distance').allTextContents();
     assert.ok(distances.length);
     assert.ok(distances.every((text, index) => !index || parseFloat(text) >= parseFloat(distances[index - 1])));
-    await page.locator('.tour-card .js-move-map').first().click();
+    await page.locator('.tour-card .place-media').first().click();
     assert.ok(await page.evaluate(async () => {
       const { markers } = await import('./js/map/kakao-map.js');
       return markers.length > 0 && markers.every(marker => marker.getImage() instanceof kakao.maps.MarkerImage);

@@ -185,7 +185,7 @@ try {
     assert.equal(await page.evaluate(async () => (await import('./js/map/kakao-map.js')).markers[2].getImage().size.width), 46);
   });
   await check('11 카드 클릭·호버 핀 상태와 선택 복원이 서로 연결', async () => {
-    await page.locator('.tour-card').first().locator('.js-move-map').last().click();
+    await page.locator('.tour-card').first().locator('.place-media').click();
     assert.equal(await page.locator('.tour-card.is-selected').getAttribute('data-id'), 'integration-1');
     await page.locator('.tour-card').nth(1).hover();
     const hover = await page.evaluate(async () => { const { markers } = await import('./js/map/kakao-map.js'); return [markers[0].getImage().size.width, markers[1].getImage().size.width]; });
