@@ -1,0 +1,55 @@
+EnjoyTrip — 원석 UI와 미르 여행 흐름의 선택적 통합
+
+1. js/config.js가 없으면 js/config.example.js를 복사하세요.
+   기존 config.js와 개인 키가 있으면 덮어쓰지 마세요.
+   references/ssafy-kakao의 수업 키는 복사하지 마세요.
+2. 본인의 Kakao JavaScript 키와 TourAPI 서비스 키를 설정하세요.
+   실제 TourAPI 활용신청과 Kakao Maps 사용 설정이 필요합니다.
+3. VS Code Live Server가 localhost:5500에서 실행 중이면 그대로 사용하세요.
+   서버가 없으면 프로젝트 루트에서 실행:
+   python3 -m http.server 5500 --bind 127.0.0.1
+4. http://localhost:5500 으로 접속하세요.
+   현재 실연동을 확인한 주소이며, Kakao 허용 도메인에도 동일 주소가 필요합니다.
+   호스트·포트를 변경하면 별도 도메인 등록과 저장소가 적용됩니다.
+5. 회원가입 → 로그인 → 검색어·여행 무드·상세 필터로 검색 → 유형별 지도 핀 확인
+   → 여행계획 담기 → 순서·날짜·예산·메모 저장
+6. 실제 다녀온 뒤 “다녀왔어요”에서 지역·날짜를 확인하고 기록하세요.
+   여행 여권의 지역 스탬프·통계에 반영됩니다.
+   검색·계획 저장·HotPlace 등록만으로는 방문 처리되지 않습니다.
+7. HotPlace 등록 모달에서 관광지를 검색해 연결하거나 직접 위치를 정하세요.
+   사진 URL 또는 파일을 추가할 수 있고 파일은 브라우저에서 JPEG로 압축됩니다.
+   “나만의 발견” 저장과 방문 완료 기록은 별도입니다.
+8. MyPage에서 내 계획·방문·HotPlace 통계를 보고 JSON 백업을 받을 수 있습니다.
+   백업에는 현재 계정의 자료만 포함하며 비밀번호·salt·해시는 제외합니다.
+
+홈·회원·기존 로컬 기록은 키 없이도 사용할 수 있습니다.
+실제 관광 검색과 지도에는 유효한 개인 키가 필요합니다.
+새 방문 기록에는 실제 API 또는 이전에 보관한 지역 목록이 필요합니다.
+사이트 실행 자체에는 npm 설치가 필요 없습니다.
+
+테스트:
+  npm ci
+  npx playwright install chromium
+  npm test
+  npm run test:browser
+  npm run test:features
+  npm run test:integration
+  npm run test:hotplace
+  LIVE_BASE_URL=http://localhost:5500 npm run test:live
+
+Linux Chromium 실행 환경 변수, 기능·데이터 구조, 검증 범위는 README.md를 확인하세요.
+
+통합 기준선 (2026-10-02):
+  서비스 27 / 기존 브라우저 20 / 무드·여권 12 / 실제 연동 11 PASS
+  최종: 서비스 39 / 기존 브라우저 20 / 무드·여권 12 PASS
+        통합 기능 16 / HotPlace 11 / 실제 연동 13 PASS
+  실제 연동 runtimeErrors 0, consoleErrors 0, failedRequests 0
+  상세 결과는 README.md와 test-results/에서 확인하세요.
+
+원석 코드 기준: a4440cd4f994761036eb4c4173ac2369d8d7e0e8
+기존 회원·저장소·개인 키를 유지하며, 원석의 별도 Node 서버·통합 DB·키는 도입하지 않았습니다.
+검색어+거리순은 실제 키워드 결과 전체를 받은 뒤 반경·거리순으로 계산합니다.
+1,000곳을 넘으면 검색어·지역·유형을 좁혀주세요.
+
+실제 통합 화면 15개는 screenshots/*-final.png와 README.md에서 확인하세요.
+관광지·지도는 실데이터이며, 캡처 속 회원·방문·일정·HotPlace는 격리 QA 브라우저의 예시입니다.

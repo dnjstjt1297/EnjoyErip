@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="EnjoyTrip 여행 정보 서비스" />
+    <title>enjoytrip — 여행, 새로운 나를 만나다.</title>
+    <meta name="theme-color" content="#f5f7ff" />
+    <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg" />
+    <link href="./assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/memories.css" />
+  </head>
+  <body class="page-index">
+    <a class="skip-link" href="#mainContent">본문 바로가기</a>
+    <nav class="navbar navbar-expand-lg sticky-top" aria-label="주 메뉴">
+      <div class="container">
+        <a class="navbar-brand text-primary" href="./index.html"
+          ><span class="brand-symbol" aria-hidden="true">↗</span>EnjoyTrip<span
+            class="brand-dot"
+            >.</span
+          ></a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="메뉴 열기"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./trip.html">여행지</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./plan.html">여행계획</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./hotplace.html">HotPlace</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./passport.html">여행 여권</a>
+            </li>
+          </ul>
+          <div id="authNav" class="d-flex gap-2"></div>
+        </div>
+      </div>
+    </nav>
+
+    <main id="mainContent">
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-layer art-globe">
+            <img
+              src="./assets/images/globe.svg"
+              alt=""
+              width="520"
+              height="520"
+            />
+          </div>
+          <div class="art-layer art-plane">
+            <img
+              src="./assets/images/plane.svg"
+              alt=""
+              width="460"
+              height="460"
+            />
+          </div>
+          <div class="art-layer art-city">
+            <img
+              src="./assets/images/city.svg"
+              alt=""
+              width="520"
+              height="520"
+            />
+          </div>
+          <div class="art-layer art-sun"></div>
+          <div class="art-layer art-ring"></div>
+          <div class="art-layer art-ticket">
+            <span>SEO</span><span>↗</span><span>ANYWHERE</span>
+          </div>
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="live-dot" aria-hidden="true"></span> YOUR NEXT JOURNEY
+            STARTS HERE
+          </p>
+          <h1 id="heroTitle">
+            어디로 떠나볼까요?<br />새로운
+            <span class="word-highlight">나</span>를 만나러.
+          </h1>
+          <p class="hero-description">익숙한 하루에, 새로운 색을 더해보세요.</p>
+          <a class="btn btn-primary explore-button" href="./trip.html"
+            >여행지 둘러보기
+            <svg
+              class="ui-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M4 12h15M13 5l7 7-7 7"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              /></svg
+          ></a>
+          <p class="hero-hint">
+            <span>DISCOVER KOREA</span> 전국의 새로운 여행지를 만나보세요
+          </p>
+        </div>
+        <div class="poster-caption" aria-hidden="true">
+          <span>TRAVEL IS AN ART.</span><span>ENJOY YOUR OWN JOURNEY ↗</span>
+        </div>
+      </section>
+      <section
+        class="container home-mood-section"
+        data-reveal
+        aria-labelledby="homeMoodTitle"
+      >
+        <div class="travel-mood-panel">
+          <div class="mood-heading">
+            <div>
+              <span class="eyebrow">FOLLOW YOUR MOOD</span>
+              <h2 id="homeMoodTitle">오늘 어떤 여행이 끌리나요?</h2>
+            </div>
+            <p class="small text-secondary mb-0">
+              오늘의 기분이, 다음 목적지가 되도록.
+            </p>
+          </div>
+          <div
+            id="homeMoodChips"
+            class="mood-chips"
+            aria-label="여행 무드로 시작하기"
+          ></div>
+        </div>
+      </section>
+      <section class="container journey-section">
+        <div class="section-heading" data-reveal>
+          <div>
+            <span class="eyebrow">LESS PLANNING, MORE EXPLORING</span>
+            <h2 class="section-title">
+              좋은 여행은<br />작은 발견에서 시작돼요.
+            </h2>
+          </div>
+          <p class="text-secondary mb-0">
+            어디로 갈지 고민하는 순간부터<br />다시 꺼내 볼 추억이 되기까지.
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4" data-reveal>
+            <a class="journey-card journey-discover" href="./trip.html"
+              ><div class="journey-art" aria-hidden="true">
+                <div class="mini-map">
+                  <span class="mini-pin pin-one">1</span
+                  ><span class="mini-pin pin-two">2</span
+                  ><span class="mini-pin pin-three">3</span
+                  ><span class="map-path"></span>
+                </div>
+                <span class="art-label">여기, 가보고 싶어요</span>
+              </div>
+              <div class="journey-card-body">
+                <span class="feature-number">01 / DISCOVER</span>
+                <h3>취향에 맞는 곳을 발견해요</h3>
+                <p>
+                  명소부터 문화, 자연과 맛집까지.<br />지도 위에서 다음 목적지를
+                  만나보세요.
+                </p>
+                <span class="journey-link"
+                  >여행지 둘러보기 <span>↗</span></span
+                >
+              </div></a
+            >
+          </div>
+          <div class="col-md-4" data-reveal>
+            <a class="journey-card journey-plan" href="./plan.html"
+              ><div class="journey-art" aria-hidden="true">
+                <div class="mini-itinerary">
+                  <span><b>01</b> 설레는 첫 번째 장소 <i>✓</i></span
+                  ><span><b>02</b> 여유로운 오후의 산책 <i>✓</i></span
+                  ><span><b>03</b> 하루를 마무리하는 풍경 <i>＋</i></span>
+                </div>
+              </div>
+              <div class="journey-card-body">
+                <span class="feature-number">02 / MAKE A PLAN</span>
+                <h3>나만의 속도로 이어가요</h3>
+                <p>
+                  가고 싶은 곳을 담고 순서를 바꿔요.<br />날짜와 예산도 한곳에서
+                  정리하세요.
+                </p>
+                <span class="journey-link"
+                  >여행계획 세우기 <span>↗</span></span
+                >
+              </div></a
+            >
+          </div>
+          <div class="col-md-4" data-reveal>
+            <a class="journey-card journey-remember" href="./hotplace.html"
+              ><div class="journey-art" aria-hidden="true">
+                <div class="memory-postcard">
+                  <span class="postcard-sun"></span
+                  ><span class="postcard-hills"></span
+                  ><span class="postcard-caption">a moment to remember ♡</span>
+                </div>
+              </div>
+              <div class="journey-card-body">
+                <span class="feature-number">03 / KEEP THE MOMENT</span>
+                <h3>다시 꺼내 보고 싶은 순간</h3>
+                <p>
+                  우연히 발견한 카페, 좋아하는 풍경.<br />사진과 이야기로 나의
+                  장소를 남겨요.
+                </p>
+                <span class="journey-link"
+                  >HotPlace 기록하기 <span>↗</span></span
+                >
+              </div></a
+            >
+          </div>
+        </div>
+      </section>
+      <section
+        id="homePassportPreview"
+        class="container home-passport-preview"
+        hidden
+        aria-labelledby="homePassportTitle"
+      >
+        <div class="passport-preview-cover">
+          <span class="eyebrow">DISCOVER KOREA, COLLECT MEMORIES</span>
+          <h2 id="homePassportTitle">나의 대한민국 여행 여권</h2>
+          <p>다녀온 순간들이 한 장씩 쌓이는 곳.</p>
+          <a href="./passport.html" class="btn btn-light">여권 펼쳐보기 ↗</a>
+        </div>
+        <div id="homePassportSummary" class="passport-preview-summary"></div>
+      </section>
+      <section class="container" data-reveal>
+        <div class="home-cta">
+          <div>
+            <span class="eyebrow">YOUR JOURNEY, YOUR WAY</span>
+            <h2>다음 여행을<br />계획해보세요.</h2>
+            <p>계획은 가볍게, 추억은 오래도록.</p>
+          </div>
+          <a class="btn btn-light btn-lg" href="./trip.html"
+            >새로운 여행 시작하기 ↗</a
+          ><span class="cta-decoration" aria-hidden="true">↗</span>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer py-4 mt-5">
+      <div class="container small text-secondary">
+        <div class="footer-inner">
+          <a class="footer-brand" href="./index.html"
+            >EnjoyTrip<span>↗</span></a
+          ><span>여행을 찾고, 기록을 남기다.</span
+          ><a href="./trip.html">다음 여행 발견하기 →</a>
+        </div>
+        <div class="footer-meta">
+          관광 정보 · 한국관광공사 TourAPI <span>지도 · Kakao</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/pages/home.js"></script>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="EnjoyTrip 여행 정보 서비스" />
+    <title>나의 여행자 프로필 | enjoytrip</title>
+    <meta name="theme-color" content="#f5f7ff" />
+    <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg" />
+    <link href="./assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/memories.css" />
+  </head>
+  <body class="page-mypage">
+    <a class="skip-link" href="#mainContent">본문 바로가기</a>
+    <nav class="navbar navbar-expand-lg sticky-top" aria-label="주 메뉴">
+      <div class="container">
+        <a class="navbar-brand text-primary" href="./index.html"
+          ><span class="brand-symbol" aria-hidden="true">↗</span>EnjoyTrip<span
+            class="brand-dot"
+            >.</span
+          ></a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="메뉴 열기"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="./trip.html">여행지</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./plan.html">여행계획</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./hotplace.html">HotPlace</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./passport.html">여행 여권</a>
+            </li>
+          </ul>
+          <div id="authNav" class="d-flex gap-2"></div>
+        </div>
+      </div>
+    </nav>
+
+    <main id="mainContent" class="container page-main">
+      <header class="page-heading mb-4">
+        <span class="eyebrow">HELLO AGAIN, TRAVELER.</span>
+        <h1 class="section-title">
+          나의 여행자 프로필<span class="heading-dot">.</span>
+        </h1>
+        <p class="text-secondary mb-0">
+          회원 정보를 관리하고, 이 브라우저에 담아둔 여행을 확인하세요.
+        </p>
+      </header>
+      <div id="profileLoginNotice" class="profile-login-panel card" hidden>
+        <h2 class="h4">로그인이 필요해요.</h2>
+        <p>내 여행 기록과 회원정보를 한곳에서 관리하세요.</p>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#loginModal"
+        >
+          로그인
+        </button>
+      </div>
+      <div id="profileCard" class="row g-4">
+        <section class="col-lg-7" aria-labelledby="profileFormTitle">
+          <div class="card profile-panel">
+            <h2 id="profileFormTitle" class="h5">회원 정보</h2>
+            <form id="profileForm" class="row g-3">
+              <div class="col-12">
+                <label for="profileId" class="form-label">아이디</label
+                ><input
+                  id="profileId"
+                  class="form-control"
+                  type="text"
+                  disabled
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="profileName" class="form-label">이름</label
+                ><input
+                  id="profileName"
+                  class="form-control"
+                  type="text"
+                  maxlength="40"
+                  autocomplete="name"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="profileEmail" class="form-label">이메일</label
+                ><input
+                  id="profileEmail"
+                  class="form-control"
+                  type="email"
+                  maxlength="254"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+              <div class="col-12 profile-password-heading">
+                <h3 class="h6">비밀번호 변경</h3>
+                <p class="small text-secondary mb-0">
+                  변경할 때만 현재 비밀번호와 새 비밀번호를 입력하세요.
+                </p>
+              </div>
+              <div class="col-12">
+                <label for="profileCurrentPassword" class="form-label"
+                  >현재 비밀번호</label
+                ><input
+                  id="profileCurrentPassword"
+                  class="form-control"
+                  type="password"
+                  autocomplete="current-password"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="profilePassword" class="form-label"
+                  >새 비밀번호 (8자 이상)</label
+                ><input
+                  id="profilePassword"
+                  class="form-control"
+                  type="password"
+                  minlength="8"
+                  maxlength="128"
+                  autocomplete="new-password"
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="profilePasswordConfirm" class="form-label"
+                  >새 비밀번호 확인</label
+                ><input
+                  id="profilePasswordConfirm"
+                  class="form-control"
+                  type="password"
+                  minlength="8"
+                  maxlength="128"
+                  autocomplete="new-password"
+                />
+              </div>
+              <div
+                id="profileError"
+                class="col-12 text-danger small"
+                role="alert"
+                hidden
+              ></div>
+              <div class="col-12">
+                <button class="btn btn-primary" type="submit">정보 수정</button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <aside class="col-lg-5" aria-label="나의 여행과 계정 관리">
+          <section class="card profile-panel">
+            <div class="profile-summary">
+              <span id="profileAvatar" class="profile-avatar" aria-hidden="true"
+                >↗</span
+              >
+              <div>
+                <span class="eyebrow">MY TRAVEL SPACE</span>
+                <h2 id="profileDisplayName" class="h4 mb-1"></h2>
+                <p id="profileDisplayEmail" class="mb-0 text-secondary"></p>
+              </div>
+            </div>
+            <div
+              id="accountStats"
+              class="account-stats"
+              aria-label="내 여행 통계"
+            ></div>
+            <button
+              id="exportData"
+              type="button"
+              class="btn btn-outline-secondary w-100"
+            >
+              내 데이터 백업 <span aria-hidden="true">↓</span>
+            </button>
+            <p class="profile-storage-note">
+              데이터는 현재 브라우저에 저장됩니다. 백업에는 내 공개 프로필과
+              여행 기록이 포함되며 비밀번호 정보는 제외됩니다.
+            </p>
+          </section>
+          <section
+            class="danger-area mt-4"
+            aria-labelledby="accountDangerTitle"
+          >
+            <h2 id="accountDangerTitle" class="h5">회원 탈퇴</h2>
+            <p>
+              탈퇴하면 이 계정의 회원정보, 여행계획, HotPlace와 여행 여권 방문
+              기록이 함께 삭제됩니다.
+            </p>
+            <button
+              id="deleteAccountBtn"
+              class="btn btn-outline-danger"
+              type="button"
+            >
+              회원 탈퇴
+            </button>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="footer py-4 mt-5">
+      <div class="container small text-secondary">
+        <div class="footer-inner">
+          <a class="footer-brand" href="./index.html"
+            >EnjoyTrip<span>↗</span></a
+          ><span>여행을 찾고, 기록을 남기다.</span
+          ><a href="./trip.html">다음 여행 발견하기 →</a>
+        </div>
+        <div class="footer-meta">
+          관광 정보 · 한국관광공사 TourAPI <span>지도 · Kakao</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/pages/mypage.js"></script>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="직접 다녀온 곳을 기록하고, 대한민국 여행 여권을 나만의 지역 스탬프로 채워보세요." />
+    <title>여행 여권 | EnjoyTrip</title>
+    <link href="./assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/memories.css" />
+    <link rel="stylesheet" href="./assets/css/passport.css" />
+  </head>
+  <body class="page-passport">
+    <a class="skip-link" href="#mainContent">본문 바로가기</a>
+    <nav class="navbar navbar-expand-lg sticky-top" aria-label="주 메뉴">
+      <div class="container">
+        <a class="navbar-brand text-primary" href="./index.html"><span class="brand-symbol" aria-hidden="true">↗</span>EnjoyTrip<span class="brand-dot">.</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="메뉴 열기"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item"><a class="nav-link" href="./trip.html">여행지</a></li>
+            <li class="nav-item"><a class="nav-link" href="./plan.html">여행계획</a></li>
+            <li class="nav-item"><a class="nav-link" href="./hotplace.html">HotPlace</a></li>
+            <li class="nav-item"><a class="nav-link" href="./passport.html">여행 여권</a></li>
+          </ul>
+          <div id="authNav" class="d-flex gap-2"></div>
+        </div>
+      </div>
+    </nav>
+
+    <main id="mainContent" class="container page-main">
+      <header class="page-heading passport-heading">
+        <div><span class="eyebrow">DISCOVER KOREA, COLLECT MEMORIES</span><h1 class="section-title h2">나의 여행 여권</h1><p class="text-secondary mb-0">여행을 찾고, 기록을 남기다. 다녀온 곳이 나만의 스탬프가 됩니다.</p></div>
+        <a href="./trip.html" class="btn btn-outline-primary">다음 여행 찾기 ↗</a>
+      </header>
+
+      <section class="passport-book" aria-label="대한민국 여행 여권">
+        <div class="passport-cover">
+          <div class="passport-cover-top"><span class="passport-cover-brand">ENJOYTRIP</span><span>TRAVEL JOURNAL</span></div>
+          <div class="passport-cover-title"><p>대한민국</p><h2>여행 여권</h2><span>THE PLACES YOU'VE BEEN</span></div>
+          <svg class="passport-emblem" viewBox="0 0 180 180" fill="none" aria-hidden="true"><circle cx="90" cy="90" r="78" stroke="currentColor" stroke-width="1"/><circle cx="90" cy="90" r="66" stroke="currentColor" stroke-dasharray="1 7"/><path d="m90 34 16 40 40 16-40 16-16 40-16-40-40-16 40-16 16-40Z" stroke="currentColor" stroke-width="1.5"/><path d="m90 51 11 28 28 11-28 11-11 28-11-28-28-11 28-11 11-28Z" fill="currentColor" opacity=".14"/><circle cx="90" cy="90" r="8" stroke="currentColor"/><path d="M90 4v15m0 142v15M4 90h15m142 0h15" stroke="currentColor"/></svg>
+          <div class="passport-holder"><span>여권 주인</span><strong id="passportOwner">다음 여행의 주인공</strong><p id="passportOwnerNote">직접 다녀온 곳을 한 장씩 채워보세요.</p></div>
+          <button id="passportLoginNotice" class="btn passport-login" type="button" data-bs-toggle="modal" data-bs-target="#loginModal" hidden>로그인하고 기록 시작하기 ↗</button>
+          <div class="passport-cover-bottom"><span>대한민국을 한 장씩</span><span aria-hidden="true">↗</span></div>
+        </div>
+
+        <div class="passport-pages">
+          <div class="passport-page-heading"><div><span class="eyebrow">YOUR REGION COLLECTION</span><h2 class="h4 mb-1">여행의 발자국</h2><p class="small text-secondary mb-0">빈 스탬프를 누르면 그 지역의 여행지를 만날 수 있어요.</p></div><span class="passport-page-number" aria-hidden="true">01 / KR</span></div>
+          <dl class="passport-stat-grid" id="passportStats" aria-label="여행 통계">
+            <div><dt>방문 지역</dt><dd><span id="passportRegionCount">0</span><small id="passportRegionTotal"> / —</small></dd></div>
+            <div><dt>다녀온 장소</dt><dd><span id="passportPlaceCount">0</span><small> 곳</small></dd></div>
+            <div><dt>이번 달 방문</dt><dd><span id="passportMonthCount">0</span><small> 곳</small></dd></div>
+            <div><dt>가장 자주 간 지역</dt><dd id="passportTopRegion" class="passport-top-region">아직 없어요</dd></div>
+          </dl>
+          <p id="passportRegionStatus" class="small text-secondary" role="status">지역 목록을 불러오고 있어요.</p>
+          <div id="stampGrid" class="passport-stamp-grid" aria-label="지역별 스탬프" aria-busy="true"></div>
+          <div id="passportArchived" class="passport-archived" hidden><h3 class="h6">이전 지역명으로 남긴 기록</h3><p class="small text-secondary">현재 지역 목록과 다른 이름으로 저장한 기록도 간직하고 있어요.</p><div id="passportArchivedStamps" class="passport-stamp-grid"></div></div>
+          <div class="passport-next-trip"><span id="passportNextCopy">아직 방문하지 않은 지역으로 떠나볼까요?</span><button type="button" id="exploreUnvisitedBtn" class="btn btn-outline-primary btn-sm" disabled>새로운 지역 만나기 ↗</button></div>
+          <p class="passport-data-note">지역 목록은 한국관광공사 TourAPI 기준입니다. 검색하거나 일정을 저장하는 것만으로는 방문 처리되지 않아요.</p>
+        </div>
+      </section>
+
+      <section class="passport-record-section" aria-labelledby="passportRecordTitle">
+        <div class="passport-record-heading"><div><span class="eyebrow">YOUR MEMORIES</span><h2 id="passportRecordTitle" class="h3 mb-1">다녀온 곳 <span id="passportVisitCount" class="passport-count">0</span></h2><p class="text-secondary small mb-0">직접 남긴 방문 기록. 취소해도 여행계획과 HotPlace는 그대로 남습니다.</p></div></div>
+        <div id="visitList" class="passport-visit-grid"></div>
+      </section>
+    </main>
+
+    <footer class="footer py-4 mt-5"><div class="container small text-secondary"><div class="footer-inner"><a class="footer-brand" href="./index.html">EnjoyTrip<span>↗</span></a><span>여행을 찾고, 기록을 남기다.</span><a href="./trip.html">다음 여행 발견하기 →</a></div><div class="footer-meta">관광 정보 · 한국관광공사 TourAPI <span>지도 · Kakao</span></div></div></footer>
+    <script src="./assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/pages/passport.js"></script>
+  </body>
+</html>

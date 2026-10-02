@@ -1,0 +1,497 @@
+/* Discover Korea, Collect Memories — additions to the shared travel design. */
+.travel-mood-panel {
+  padding: 20px 23px 17px;
+  border: 1px solid #dce7ef;
+  border-radius: 16px;
+  background:
+    radial-gradient(ellipse at 100% 0%, #dff1f780, transparent 65%), #eef4fa;
+}
+.mood-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.mood-heading .eyebrow {
+  font-size: 0.59rem;
+  margin-bottom: 7px;
+}
+.mood-heading h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+.mood-heading > .btn {
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+.mood-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.mood-chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid #dfe6ef;
+  border-radius: 10px;
+  padding: 8px 13px;
+  background: #ffffffd9;
+  color: #43536a;
+  text-decoration: none;
+  font-size: 0.81rem;
+  font-weight: 650;
+  transition:
+    transform 0.18s,
+    background 0.18s,
+    border-color 0.18s,
+    box-shadow 0.18s;
+}
+.mood-chip > span {
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+.mood-chip:hover {
+  background: #fff;
+  color: var(--primary);
+  border-color: #7cabb7;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px #24334b0b;
+}
+.mood-chip[aria-pressed="true"] {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px #087f9125;
+  animation: mood-select 0.23s ease;
+}
+.mood-description {
+  font-size: 0.76rem;
+  color: #73849a;
+  margin: 11px 0 0;
+  min-height: 20px;
+}
+.home-mood-section {
+  padding-top: 42px;
+}
+.home-mood-section .travel-mood-panel {
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  padding: 29px 32px;
+}
+.home-mood-section .mood-chips {
+  gap: 10px;
+}
+.home-mood-section .mood-chip {
+  flex: 1;
+  white-space: nowrap;
+  background: #f3f6fb;
+}
+.home-passport-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 60px;
+}
+.passport-preview-cover {
+  position: relative;
+  padding: 36px;
+  border-radius: 22px 0 0 22px;
+  color: #fff;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 8px, #ffffff03 8px 9px),
+    #234854;
+}
+.passport-preview-cover .eyebrow {
+  color: #b9d6dc;
+  font-size: 0.56rem;
+}
+.passport-preview-cover h2 {
+  font-size: 1.65rem;
+}
+.passport-preview-cover p {
+  color: #c1d5df;
+  font-size: 0.86rem;
+  margin-block: 14px 23px;
+}
+.passport-preview-cover::after {
+  content: "ET";
+  position: absolute;
+  font-size: 88px;
+  font-weight: 700;
+  right: 28px;
+  bottom: 35px;
+  color: #ffffff08;
+  border: 2px solid #ffffff12;
+  border-radius: 50%;
+  line-height: 1;
+  padding: 15px;
+  transform: rotate(-15deg);
+  pointer-events: none;
+}
+.passport-preview-summary {
+  padding: 37px;
+  border: 1px solid #dce3ef;
+  border-left: 2px dashed #c9d6e4;
+  border-radius: 0 22px 22px 0;
+  background: #f7f8fc;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  gap: 12px 20px;
+}
+.passport-preview-summary > .eyebrow,
+.passport-preview-summary > p {
+  grid-column: 1/-1;
+}
+.preview-stat {
+  display: grid;
+  margin-bottom: 10px;
+}
+.preview-stat strong {
+  color: var(--primary);
+  font-size: 2.6rem;
+  font-weight: 760;
+  line-height: 1.3;
+}
+.preview-stat small {
+  font-size: 1rem;
+  color: #8a98a9;
+  font-weight: 500;
+}
+.preview-stat > span {
+  font-size: 0.75rem;
+  color: #73849a;
+}
+.result-tools {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+.result-tools a {
+  font-size: 0.73rem;
+}
+.random-button {
+  border: 0;
+  border-radius: 10px;
+  background: #eaf2f8;
+  color: #437789;
+  padding: 9px 12px;
+  font-size: 0.75rem;
+  font-weight: 650;
+  min-height: 40px;
+  transition: background 0.2s;
+}
+.random-button:hover {
+  background: #dcecf3;
+}
+.random-button > span {
+  margin-right: 4px;
+}
+.random-recommendation {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #fffdf2;
+  border: 1px solid #e4dfb8;
+  border-radius: 18px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+.random-recommendation .eyebrow {
+  color: #928359;
+  font-size: 0.52rem;
+  margin-bottom: 6px;
+}
+.random-recommendation h2 {
+  font-size: 1.12rem;
+  margin-bottom: 5px;
+}
+.random-recommendation p {
+  font-size: 0.75rem !important;
+}
+.random-recommendation .btn {
+  margin-left: auto;
+  white-space: nowrap;
+}
+.random-symbol {
+  font-size: 2rem;
+}
+.is-shuffling .random-symbol {
+  animation: dice-roll 0.5s ease;
+}
+.tour-visit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 11px;
+}
+.tour-visit-row > a {
+  font-size: 0.65rem;
+  color: #8192a7;
+  text-decoration: none;
+}
+.visit-button {
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #74899c;
+  font-size: 0.71rem;
+  padding: 6px 8px;
+  min-height: 34px;
+  line-height: 1.4;
+  text-align: left;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    border-color 0.18s;
+}
+.visit-button:hover {
+  border-color: #aecbd6;
+  color: var(--primary);
+  background: #edf6f8;
+}
+.visit-button.is-visited {
+  color: #24707a;
+  background: #e3f1f4;
+  border-color: #cce3e8;
+  font-weight: 650;
+}
+.visit-ticket {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  padding: 17px;
+  border: 1px dashed #afc9d6;
+  border-radius: 13px;
+  background: #f0f6fa;
+}
+.visit-ticket > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  height: 44px;
+  border: 2px solid #7b9eae;
+  border-radius: 50%;
+  color: #678c9c;
+  font-size: 1.7rem;
+  transform: rotate(-12deg);
+}
+.visit-ticket strong,
+.visit-ticket small {
+  display: block;
+}
+.visit-ticket small {
+  font-size: 0.62rem;
+  color: #8196a4;
+  margin-bottom: 5px;
+}
+.visit-ticket strong {
+  font-size: 1.04rem;
+}
+.visit-modal .modal-header {
+  background: #f4f7fc;
+}
+.visit-modal .eyebrow {
+  font-size: 0.55rem;
+  margin-bottom: 7px;
+}
+.visit-modal .modal-title {
+  font-size: 1.45rem;
+}
+.saved-visit-places {
+  margin-block: 10px;
+  display: grid;
+  gap: 4px;
+}
+.saved-visit-place {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  border-top: 1px dashed #e0e7ef;
+  padding-block: 8px;
+}
+.saved-visit-place > span {
+  font-size: 0.83rem;
+}
+.saved-visit-place .visit-button {
+  flex-shrink: 0;
+}
+.discovery-badge {
+  font-size: 0.65rem;
+  color: #8a7955;
+  background: #f8f1df;
+  border-radius: 7px;
+  padding: 3px 8px;
+}
+.itinerary-item .visit-button {
+  padding-block: 5px;
+  min-height: 30px;
+  margin-left: -6px;
+  font-size: 0.67rem;
+}
+@keyframes mood-select {
+  50% {
+    transform: scale(1.04);
+  }
+}
+@keyframes dice-roll {
+  0% {
+    transform: rotate(-20deg) scale(0.9);
+  }
+  50% {
+    transform: rotate(20deg) scale(1.12);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar-brand {
+    margin-right: 1rem;
+  }
+  .navbar-nav {
+    gap: 0;
+  }
+  .navbar-nav .nav-link {
+    padding-inline: 0.7rem !important;
+  }
+  #authNav .btn {
+    font-size: 0.72rem;
+    padding-inline: 0.65rem;
+  }
+  .home-mood-section .mood-chip {
+    padding-inline: 10px;
+    font-size: 0.75rem;
+  }
+}
+@media (max-width: 991.98px) {
+  .home-mood-section .mood-chip {
+    flex: initial;
+  }
+  .home-mood-section .mood-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .home-passport-preview {
+    grid-template-columns: 1fr;
+  }
+  .passport-preview-cover {
+    border-radius: 22px 22px 0 0;
+  }
+  .passport-preview-summary {
+    border-radius: 0 0 22px 22px;
+    border-left: 1px solid #dce3ef;
+    border-top: 2px dashed #c9d6e4;
+  }
+}
+@media (max-width: 767.98px) {
+  .travel-mood-panel,
+  .home-mood-section .travel-mood-panel {
+    padding: 23px 20px;
+    border-radius: 18px;
+  }
+  .mood-heading {
+    align-items: start;
+    gap: 8px;
+  }
+  .mood-heading h2 {
+    font-size: 1.18rem;
+  }
+  .mood-heading .btn {
+    padding: 0;
+    min-height: 36px;
+    font-size: 0.64rem;
+  }
+  .mood-heading .eyebrow {
+    font-size: 0.51rem;
+  }
+  .mood-chips {
+    gap: 8px;
+  }
+  .mood-chip {
+    font-size: 0.73rem;
+    padding: 9px 11px;
+    min-height: 44px;
+    gap: 6px;
+  }
+  .mood-description {
+    font-size: 0.71rem;
+  }
+  .home-mood-section .mood-heading p {
+    font-size: 0.75rem !important;
+  }
+  .home-mood-section .mood-chip {
+    flex: initial;
+  }
+  .home-passport-preview {
+    margin-bottom: 40px;
+  }
+  .passport-preview-cover,
+  .passport-preview-summary {
+    padding: 28px;
+  }
+  .passport-preview-cover h2 {
+    font-size: 1.5rem;
+  }
+  .results-heading {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 12px !important;
+  }
+  .result-tools {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .random-recommendation {
+    flex-wrap: wrap;
+    padding: 18px;
+    gap: 12px;
+  }
+  .random-recommendation > div {
+    flex: 1;
+  }
+  .random-recommendation .btn {
+    margin-left: 0;
+    width: 100%;
+  }
+  .random-symbol {
+    font-size: 1.5rem;
+  }
+  .visit-button {
+    min-height: 42px;
+    font-size: 0.74rem;
+  }
+  .itinerary-item .visit-button {
+    min-height: 38px;
+  }
+  .tour-visit-row > a {
+    font-size: 0.68rem;
+  }
+  .saved-visit-place {
+    align-items: start;
+    gap: 9px;
+  }
+  .saved-visit-place .visit-button {
+    max-width: 130px;
+  }
+  .visit-modal .modal-body {
+    padding: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mood-chip,
+  .random-symbol,
+  .random-button,
+  .visit-button {
+    animation: none !important;
+    transition: none !important;
+  }
+}

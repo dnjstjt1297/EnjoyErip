@@ -1,0 +1,109 @@
+/* Wonseok's photo journal: a collection beside a map, with a focused editor. */
+.page-hotplace .hotplace-heading { margin-bottom: 30px; }
+.page-hotplace .hotplace-heading h1 { font-size: clamp(1.8rem, 3vw, 2.5rem); margin: 12px 0; }
+.page-hotplace .hotplace-heading h1 > span { color: var(--primary); }
+.page-hotplace .hotplace-heading p { color: var(--text-sub); margin: 0; font-size: .91rem; }
+.hotplace-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.hotplace-toolbar .form-select { width: auto; min-width: 170px; }
+.hotplace-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+.hotplace-layout > * { min-width: 0; }
+.hotplace-map-panel { position: sticky; top: 106px; }
+.page-hotplace .hotplace-map-panel #map { height: min(66vh, 640px); min-height: 420px; }
+.hotplace-map-caption, .hotplace-storage-note { color: var(--text-sub); font-size: .76rem; line-height: 1.8; }
+.hotplace-map-caption { margin: 10px 5px 0; }
+.hotplace-storage-note { margin: 24px 0 0; }
+.hotplace-layout .hotplace-card { border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow-sm); }
+.hotplace-layout .hotplace-card > .place-media { height: auto; aspect-ratio: 4 / 3; min-height: 160px; }
+.hotplace-layout .hotplace-card > .place-media img { height: 100%; }
+.hotplace-layout .hotplace-card .card-body { padding: 19px; }
+.hotplace-card-tags { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+.hotplace-card-tags .category-tag, .hotplace-card-tags .discovery-badge { font-size: .64rem; }
+.hotplace-card h2 { margin: 12px 0 7px; font-size: 1.03rem; line-height: 1.5; }
+.hotplace-card-address, .hotplace-card-meta { font-size: .72rem; color: var(--text-sub); line-height: 1.8; margin: 0; }
+.hotplace-card-address { min-height: 2.6em; }
+.hotplace-story-link { padding: 13px 0; background: none; border: 0; color: var(--primary); font-size: .78rem; font-weight: 700; text-align: left; min-height: 44px; }
+.hotplace-story-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.hotplace-card-bottom { display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border); }
+.hotplace-card-bottom > .visit-button { justify-self: start; text-align: left; }
+.hotplace-card-bottom .btn { padding: 7px 11px; font-size: .68rem; min-height: 36px; }
+.hotplace-layout .empty-state { background: var(--surface); border: 1px dashed var(--border); border-radius: 16px; padding: 70px 24px; }
+.hotplace-layout .empty-state p { font-size: .84rem; }
+.hotplace-modal .modal-dialog { max-width: 800px; }
+.hotplace-modal .modal-content, .hotplace-detail-modal .modal-content { border-radius: 22px; }
+.hotplace-modal .modal-header { padding: 27px 30px 20px; border-bottom: 1px solid var(--border); }
+.hotplace-modal .modal-header .eyebrow { display: block; font-size: .6rem; margin-bottom: 7px; }
+.hotplace-modal .modal-body { padding: 25px 30px; }
+.hotplace-modal .modal-footer { position: sticky; bottom: 0; background: var(--surface); border-top: 1px solid var(--border); padding: 18px 30px; border-radius: 0 0 22px 22px; z-index: 3; }
+.hotplace-modal .form-label { font-size: .8rem; }
+.hotplace-modal .form-control, .hotplace-modal .form-select { font-size: .85rem; }
+.hotplace-modal .form-text { font-size: .71rem; }
+.hotplace-modal .d-flex > input { min-width: 0; }
+.hotplace-modal .d-flex > button { flex-shrink: 0; }
+.hot-tour-search { padding: 21px; border: 1px solid var(--border); background: var(--surface-soft); border-radius: 15px; margin-bottom: 22px; }
+.hot-tour-search h3 { font-size: 1.05rem; margin: 0 0 8px; }
+.hot-tour-search > p { color: var(--text-sub); font-size: .77rem; line-height: 1.8; }
+.hot-tour-search .form-label { font-size: .72rem; }
+.hot-tour-search .form-control, .hot-tour-search .form-select { font-size: .75rem; padding-left: 10px; }
+.hot-tour-search .btn { font-size: .75rem; padding-left: 13px; padding-right: 13px; }
+.hot-tour-status { margin: 15px 0 0; min-height: 1.8em; }
+.hot-tour-results { max-height: 310px; overflow-y: auto; margin-top: 13px; scrollbar-width: thin; }
+.hot-tour-results:empty { display: none; }
+.hot-tour-result { display: flex; align-items: center; gap: 12px; padding: 13px; border: 1px solid var(--border); background: var(--surface); border-radius: 10px; margin-bottom: 8px; }
+.hot-tour-result > .place-media { width: 62px; height: 62px; min-height: 0; flex: 0 0 62px; border-radius: 8px; }
+.hot-tour-result .image-placeholder { min-height: 0; padding: 8px; }
+.hot-tour-result .image-placeholder svg { width: 32px; height: 32px; margin: 0; }
+.hot-tour-result .image-placeholder span, .hot-tour-result .image-placeholder small { display: none; }
+.hot-tour-result > div:not(.place-media) { flex: 1; min-width: 0; }
+.hot-tour-result .category-tag { font-size: .61rem; padding: 3px 7px; }
+.hot-tour-result strong { display: block; font-size: .78rem; line-height: 1.6; margin: 5px 0 3px; }
+.hot-tour-result p { font-size: .67rem; line-height: 1.6; color: var(--text-sub); margin: 0; }
+.hot-tour-result > button { flex-shrink: 0; font-size: .67rem; padding: 6px 9px; }
+.hot-tour-result button[aria-pressed="true"] { background: var(--primary-light); color: var(--primary-dark); }
+.hot-tour-loading { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 30px; font-size: .8rem; color: var(--primary); }
+.hot-tour-pagination { display: flex; justify-content: center; align-items: center; gap: 17px; margin-top: 12px; font-size: .77rem; }
+.hot-tour-selected { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; background: var(--primary-light); border: 1px solid var(--border); border-radius: 9px; padding: 11px 13px; color: var(--primary-dark); font-size: .76rem; margin-top: 13px; }
+.hot-tour-selected .btn { min-height: 34px; padding: 4px 0; font-size: .69rem; }
+.hotplace-pick-map { height: 260px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface-soft); }
+.hotplace-pick-map .map-unavailable { padding: 20px; min-height: 0; font-size: .75rem; }
+.hotplace-modal .image-preview { height: 200px; min-height: 200px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-soft); overflow: hidden; }
+.hotplace-modal .image-preview .place-media { height: 100%; }
+.hotplace-modal .image-preview img { height: 100%; object-fit: contain; }
+.hotplace-modal .image-preview .image-placeholder { min-height: 0; height: 100%; }
+.hotplace-detail-modal .modal-header { border: 0; padding: 18px 23px; }
+.hotplace-detail-modal .modal-body { padding: 0; overflow: hidden; border-radius: 0 0 22px 22px; }
+.hotplace-detail-modal .modal-body > .place-media { height: 300px; }
+.hotplace-detail-copy { padding: 28px 32px 32px; }
+.hotplace-detail-copy h2 { font-size: 1.8rem; margin: 15px 0 10px; }
+.hotplace-detail-meta { padding-bottom: 17px; border-bottom: 1px solid var(--border); margin-bottom: 20px; font-size: .76rem; color: var(--text-sub); }
+.hotplace-detail-copy .preserve-lines { font-size: .9rem; line-height: 1.9; }
+.hotplace-detail-copy dl { display: grid; grid-template-columns: 48px 1fr; gap: 12px; font-size: .82rem; margin-top: 24px; }
+.hotplace-detail-copy dt { color: var(--text-sub); }
+.hotplace-tour-source { padding: 13px 15px; background: var(--surface-soft); border-radius: 10px; font-size: .79rem; }
+.hotplace-tour-source small { color: var(--text-sub); }
+@media (max-width: 1100px) {
+  .hotplace-layout { grid-template-columns: 1.1fr 1fr; gap: 18px; }
+  .hotplace-layout .hotplace-card .card-body { padding: 15px; }
+}
+@media (max-width: 767px) {
+  .hotplace-layout { grid-template-columns: 1fr; }
+  .hotplace-map-panel { position: relative; top: auto; grid-row: 1; }
+  .page-hotplace .hotplace-map-panel #map { height: 330px; min-height: 0; }
+  .hotplace-toolbar { align-items: center; gap: 10px; }
+  .hotplace-toolbar .form-select { min-width: 0; max-width: 160px; font-size: .74rem; }
+  .hotplace-toolbar > .btn { font-size: .76rem; padding: 10px 12px; }
+  .hotplace-toolbar .category-tag { font-size: .67rem; }
+  .hotplace-modal .modal-header, .hotplace-modal .modal-body { padding: 22px 19px; }
+  .hotplace-modal .modal-footer { padding: 15px 19px; }
+  .hot-tour-search { padding: 15px; }
+  .hot-tour-result { padding: 10px; gap: 8px; }
+  .hot-tour-result > .place-media { width: 44px; height: 54px; flex-basis: 44px; }
+  .hot-tour-result > button { padding: 6px 8px; font-size: .65rem; }
+  .hotplace-modal .d-flex > #findAddress { font-size: .72rem; padding: 9px 11px; }
+  .hotplace-pick-map { height: 235px; }
+  .hotplace-detail-modal .modal-body > .place-media { height: 230px; }
+  .hotplace-detail-copy { padding: 23px; }
+  .hotplace-detail-copy h2 { font-size: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hotplace-modal *, .hotplace-detail-modal *, .hotplace-layout * { animation: none !important; transition: none !important; }
+}

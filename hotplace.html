@@ -1,0 +1,92 @@
+    <!doctype html>
+    <html lang="ko">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description" content="EnjoyTrip 여행 정보 서비스" />
+      <title>HotPlace | EnjoyTrip</title>
+      <link href="./assets/vendor/bootstrap/bootstrap.min.css" rel="stylesheet" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+      <link rel="stylesheet" href="./assets/css/style.css" />
+      <link rel="stylesheet" href="./assets/css/memories.css" />
+      <link rel="stylesheet" href="./assets/css/hotplace.css" />
+    </head>
+    <body class="page-hotplace">
+      <a class="skip-link" href="#mainContent">본문 바로가기</a>
+      <nav class="navbar navbar-expand-lg sticky-top" aria-label="주 메뉴">
+  <div class="container">
+    <a class="navbar-brand text-primary" href="./index.html"><span class="brand-symbol" aria-hidden="true">↗</span>EnjoyTrip<span class="brand-dot">.</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar" aria-expanded="false" aria-label="메뉴 열기">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="./trip.html">여행지</a></li>
+        <li class="nav-item"><a class="nav-link" href="./plan.html">여행계획</a></li>
+        <li class="nav-item"><a class="nav-link" href="./hotplace.html">HotPlace</a></li>
+        <li class="nav-item"><a class="nav-link" href="./passport.html">여행 여권</a></li>
+      </ul>
+      <div id="authNav" class="d-flex gap-2"></div>
+    </div>
+  </div>
+</nav>
+
+      <main id="mainContent" class="container page-main">
+  <div class="page-heading hotplace-heading">
+    <span class="eyebrow">A LITTLE PLACE. A BIG MEMORY.</span>
+    <h1>우리만 아는 핫플레이스<span>.</span></h1>
+    <p>사진과 지도 위에 남기는 나만의 장소. 여행에서 발견한 작은 이야기를 모아보세요.</p>
+  </div>
+  <div id="hotplaceLoginNotice" class="alert alert-info" hidden>로그인하고 나만의 장소를 기록해 보세요. <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#loginModal">로그인</button></div>
+  <div class="hotplace-toolbar">
+    <div class="d-flex align-items-center gap-2 flex-wrap"><label class="visually-hidden" for="hotFilter">나의 장소 기록 필터</label><select id="hotFilter" class="form-select"><option value="all">내 모든 기록</option><option value="tour">관광지에서 발견</option><option value="manual">직접 찾은 장소</option></select><span id="hotplaceCount" class="category-tag">0곳</span></div>
+    <button id="newHotplace" class="btn btn-primary" type="button">핫플레이스 등록 ＋</button>
+  </div>
+  <div class="hotplace-layout">
+    <section aria-labelledby="hotplaceListTitle"><h2 id="hotplaceListTitle" class="visually-hidden">내가 기록한 장소</h2><div id="hotplaceList" class="row g-3"></div></section>
+    <section class="hotplace-map-panel" aria-label="내 장소 지도"><div class="map-frame"><div class="map-topline"><span><span class="live-dot" aria-hidden="true"></span> 지도에 남긴 순간</span><button id="hotFitMarkers" type="button" class="btn btn-link btn-sm">전체 보기</button></div><div id="map" aria-label="HotPlace 위치 지도"></div></div><p class="hotplace-map-caption">장소나 지도 핀을 눌러 여행 이야기를 펼쳐보세요.</p></section>
+  </div>
+  <p class="hotplace-storage-note">이 브라우저에 저장한 내 기록입니다. 방문 기록은 ‘다녀왔어요’에서 별도로 남길 수 있어요.</p>
+</main>
+
+<div class="modal fade hotplace-modal" id="hotplaceModal" tabindex="-1" aria-labelledby="hotplaceEditorTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg"><div class="modal-content" id="hotplaceEditor">
+    <div class="modal-header"><div><span class="eyebrow">SHARE YOUR LITTLE DISCOVERY</span><h2 class="modal-title h4" id="hotplaceEditorTitle">핫플레이스 등록</h2></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="등록 창 닫기"></button></div>
+    <form id="hotplaceForm">
+      <div class="modal-body">
+        <section class="hot-tour-search" aria-labelledby="hotTourSearchTitle">
+          <h3 id="hotTourSearchTitle">관광지 검색해서 선택하기</h3><p>관광지를 고르면 이름과 주소, 유형, 지도 위치가 채워져요. 직접 입력해도 좋아요.</p>
+          <div class="row g-2"><div class="col-6 col-md-3"><label class="form-label" for="hotTourArea">지역</label><select id="hotTourArea" class="form-select"><option value="">전국</option></select></div><div class="col-6 col-md-3"><label class="form-label" for="hotTourType">관광 유형</label><select id="hotTourType" class="form-select"><option value="12">관광지</option><option value="">전체 유형</option><option value="14">문화시설</option><option value="15">축제·공연</option><option value="25">여행코스</option><option value="28">레포츠</option><option value="32">숙박</option><option value="38">쇼핑</option><option value="39">음식점</option></select></div><div class="col-12 col-md-6"><label class="form-label" for="hotTourKeyword">관광지 이름</label><div class="d-flex gap-2"><input id="hotTourKeyword" class="form-control" maxlength="80" placeholder="예: 경복궁, 성산일출봉"><button id="hotTourSearch" class="btn btn-primary" type="button">검색</button></div></div></div>
+          <p id="hotTourStatus" class="hot-tour-status" role="status">지역이나 이름으로 찾아보세요. 실제 TourAPI 관광지를 조회합니다.</p><div id="hotTourResults" class="hot-tour-results" aria-label="선택할 관광지 목록"></div>
+          <div id="hotTourPagination" class="hot-tour-pagination" hidden><button id="hotTourPrev" type="button" class="btn btn-outline-secondary btn-sm">← 이전</button><span id="hotTourPage">1 / 1</span><button id="hotTourNext" type="button" class="btn btn-outline-secondary btn-sm">다음 →</button></div>
+          <div id="hotTourSelected" class="hot-tour-selected" hidden><span id="hotTourSelectedLabel"></span><button id="clearTourSelection" type="button" class="btn btn-link btn-sm">선택 해제 · 직접 입력</button></div>
+        </section>
+        <div class="row g-3 mt-1">
+          <div class="col-12"><label class="form-label" for="placeName">장소 이름</label><input id="placeName" class="form-control" maxlength="100" required></div>
+          <div class="col-sm-6"><label class="form-label" for="visitDate">다녀온 날짜</label><input id="visitDate" class="form-control" type="date" required></div>
+          <div class="col-sm-6"><label class="form-label" for="placeType">장소 유형</label><select id="placeType" class="form-select" required><option value="">선택</option><option>관광지</option><option>카페</option><option>음식점</option><option>카페·음식점</option><option>문화시설</option><option>축제·공연</option><option>여행코스</option><option>레포츠</option><option>자연</option><option>숙소</option><option>숙박</option><option>쇼핑</option><option>명소</option><option>기타</option></select></div>
+          <div class="col-12"><label class="form-label" for="placeAddress">주소 <span class="text-secondary fw-normal">(선택)</span></label><div class="d-flex gap-2"><input id="placeAddress" class="form-control" maxlength="150" placeholder="도로명 주소로 위치를 찾을 수 있어요"><button id="findAddress" class="btn btn-outline-primary" type="button">주소 검색</button></div></div>
+          <div class="col-6"><label for="placeLat" class="form-label">위도</label><input id="placeLat" class="form-control" type="number" step="any" min="-90" max="90" required placeholder="37.5665"></div><div class="col-6"><label for="placeLng" class="form-label">경도</label><input id="placeLng" class="form-control" type="number" step="any" min="-180" max="180" required placeholder="126.9780"></div>
+          <div class="col-12"><p id="selectedLocation" class="small text-secondary mb-2" role="status">지도를 클릭하거나 주소 검색으로 위치를 지정해 주세요.</p><div id="pickMap" class="hotplace-pick-map" aria-label="HotPlace 위치 선택 지도"></div></div>
+          <div class="col-12"><label for="placePhoto" class="form-label">직접 찍은 사진 <span class="text-secondary fw-normal">(선택)</span></label><input id="placePhoto" class="form-control" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photoHelp"><p id="photoHelp" class="form-text">JPEG, PNG, WebP · 최대 5MB · 저장 전 작은 사진으로 압축합니다.</p></div>
+          <div class="col-12"><label for="placeImage" class="form-label">또는 사진 URL <span class="text-secondary fw-normal">(선택)</span></label><input id="placeImage" class="form-control" type="url" placeholder="https://..." aria-describedby="imageHelp"><p id="imageHelp" class="form-text">직접 촬영했거나 사용할 수 있는 사진의 주소를 입력하세요. 업로드한 사진이 있으면 우선 표시해요.</p><div id="imagePreview" class="image-preview"></div><div class="d-flex justify-content-between align-items-center gap-2 mt-2"><span id="photoStatus" class="small text-secondary" role="status">사진 없이도 기록할 수 있어요.</span><button id="clearPlacePhoto" type="button" class="btn btn-link btn-sm">사진 초기화</button></div></div>
+          <div class="col-12"><label for="placeDescription" class="form-label">장소 소개</label><textarea id="placeDescription" class="form-control" rows="4" maxlength="2000" required placeholder="이 장소에서 기억에 남은 순간, 다시 찾고 싶은 이유를 남겨보세요."></textarea></div>
+        </div><div id="hotError" class="alert alert-danger mt-3 mb-0" role="alert" hidden></div>
+      </div>
+      <div class="modal-footer"><button id="cancelPlaceEdit" class="btn btn-outline-secondary" type="button">입력 초기화</button><button id="savePlaceBtn" class="btn btn-primary" type="submit">핫플레이스 저장</button></div>
+    </form>
+  </div></div>
+</div>
+<div class="modal fade hotplace-detail-modal" id="hotplaceDetailModal" tabindex="-1" aria-labelledby="hotDetailTitle" aria-hidden="true"><div class="modal-dialog modal-dialog-centered modal-lg"><div class="modal-content"><div class="modal-header"><span class="eyebrow">A PLACE TO REMEMBER</span><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="장소 이야기 닫기"></button></div><div id="hotDetail" class="modal-body"></div></div></div></div>
+
+      <footer class="footer py-4 mt-5">
+  <div class="container small text-secondary">
+    <div class="footer-inner"><a class="footer-brand" href="./index.html">EnjoyTrip<span>↗</span></a><span>여행을 찾고, 기록을 남기다.</span><a href="./trip.html">다음 여행 발견하기 →</a></div><div class="footer-meta">관광 정보 · 한국관광공사 TourAPI <span>지도 · Kakao</span></div>
+  </div>
+</footer>
+
+      <script src="./assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+      <script type="module" src="./js/pages/hotplace.js"></script>
+    </body>
+    </html>

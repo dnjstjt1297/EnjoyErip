@@ -1,18 +1,16 @@
 {
   "name": "enjoytrip",
-  "version": "1.0.0",
   "private": true,
-  "description": "Enjoytrip — a typographic travel experience built with HTML, CSS, JavaScript and Node.js",
+  "type": "module",
   "scripts": {
-    "dev": "node --watch backend/src/server.js",
-    "start": "node backend/src/server.js",
-    "test": "node --test tests/*.test.mjs",
-    "test:api": "node scripts/verify-api.cjs"
-  },
-  "engines": {
-    "node": ">=20"
+    "test": "node --test tests/services.test.mjs tests/visits.test.mjs tests/markers.test.mjs tests/hotplace-port.test.mjs",
+    "test:browser": "node tests/browser.test.mjs",
+    "test:live": "node tests/live-browser.test.mjs",
+    "test:features": "node tests/features-browser.test.mjs",
+    "test:integration": "node tests/integration-browser.test.mjs",
+    "test:hotplace": "node tests/hotplace-browser.test.mjs"
   },
   "devDependencies": {
-    "jsdom": "26.1.0"
+    "playwright": "1.63.0"
   }
 }
